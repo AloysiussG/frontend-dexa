@@ -78,13 +78,13 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="leading-none">
+              <DropdownMenuItem className="leading-snug">
                 <IconUserCircle />
                 Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" className="leading-none">
+            <DropdownMenuItem variant="destructive" className="leading-snug">
               <IconLogout />
               Log out
             </DropdownMenuItem>

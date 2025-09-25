@@ -5,7 +5,8 @@
     "email": "alice.hr@company.com",
     "role": "HR",
     "createdAt": "2025-09-20T08:00:00.000Z",
-    "updatedAt": "2025-09-20T08:00:00.000Z"
+    "updatedAt": "2025-09-20T08:00:00.000Z",
+    "hiredDate": "2025-01-15"
   },
   {
     "id": 2,
@@ -13,7 +14,8 @@
     "email": "david.hr@company.com",
     "role": "HR",
     "createdAt": "2025-09-20T08:05:00.000Z",
-    "updatedAt": "2025-09-20T08:05:00.000Z"
+    "updatedAt": "2025-09-20T08:05:00.000Z",
+    "hiredDate": "2025-01-15"
   },
   {
     "id": 3,
@@ -21,7 +23,8 @@
     "email": "bob.worker@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-21T09:00:00.000Z",
-    "updatedAt": "2025-09-21T09:00:00.000Z"
+    "updatedAt": "2025-09-21T09:00:00.000Z",
+    "hiredDate": "2025-02-15"
   },
   {
     "id": 4,
@@ -29,7 +32,8 @@
     "email": "charlie.staff@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-21T09:15:00.000Z",
-    "updatedAt": "2025-09-21T09:15:00.000Z"
+    "updatedAt": "2025-09-21T09:15:00.000Z",
+    "hiredDate": "2025-02-15"
   },
   {
     "id": 5,
@@ -37,7 +41,8 @@
     "email": "diana.emp@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-22T10:00:00.000Z",
-    "updatedAt": "2025-09-22T10:00:00.000Z"
+    "updatedAt": "2025-09-22T10:00:00.000Z",
+    "hiredDate": "2025-02-15"
   },
   {
     "id": 6,
@@ -45,7 +50,8 @@
     "email": "ethan.worker@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-22T10:30:00.000Z",
-    "updatedAt": "2025-09-22T10:30:00.000Z"
+    "updatedAt": "2025-09-22T10:30:00.000Z",
+    "hiredDate": "2025-02-15"
   },
   {
     "id": 7,
@@ -53,7 +59,8 @@
     "email": "fiona.staff@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-23T11:00:00.000Z",
-    "updatedAt": "2025-09-23T11:00:00.000Z"
+    "updatedAt": "2025-09-23T11:00:00.000Z",
+    "hiredDate": "2025-02-15"
   },
   {
     "id": 8,
@@ -61,7 +68,8 @@
     "email": "george.worker@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-23T11:15:00.000Z",
-    "updatedAt": "2025-09-23T11:15:00.000Z"
+    "updatedAt": "2025-09-23T11:15:00.000Z",
+    "hiredDate": "2025-02-15"
   },
   {
     "id": 9,
@@ -69,7 +77,8 @@
     "email": "hannah.emp@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-24T12:00:00.000Z",
-    "updatedAt": "2025-09-24T12:00:00.000Z"
+    "updatedAt": "2025-09-24T12:00:00.000Z",
+    "hiredDate": "2025-03-15"
   },
   {
     "id": 10,
@@ -77,6 +86,7 @@
     "email": "ian.staff@company.com",
     "role": "EMPLOYEE",
     "createdAt": "2025-09-24T12:30:00.000Z",
-    "updatedAt": "2025-09-24T12:30:00.000Z"
+    "updatedAt": "2025-09-24T12:30:00.000Z",
+    "hiredDate": "2025-03-15"
   }
 ]

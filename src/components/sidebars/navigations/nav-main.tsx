@@ -36,7 +36,7 @@ export function NavMain({
               >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
-                  <span className="leading-none">{item.title}</span>
+                  <span className="leading-snug">{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

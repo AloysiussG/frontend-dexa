@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { I18nProvider } from "@react-aria/i18n";
 import { z } from "zod";
 import {
   Form,
@@ -10,13 +11,15 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { addToast, Input, Select, SelectItem } from "@heroui/react";
+import { addToast, DatePicker, Input, Select, SelectItem } from "@heroui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { schema } from "../tables/employee-table";
 import PrimaryButton from "../buttons/primary-button";
+import { format } from "date-fns";
+import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 
 const roles = [
   { label: "HR", value: "HR" },
@@ -94,6 +97,7 @@ export default function EmployeeForm({
       email: "",
       password: "",
       role: "",
+      hiredDate: format(new Date(), "yyyy-MM-dd"), // Default to today's date
     },
   });
 
@@ -212,6 +216,35 @@ export default function EmployeeForm({
                   <SelectItem key={role.value}>{role.label}</SelectItem>
                 ))}
               </Select>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="hiredDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-3">
+              <FormLabel>Hired Date</FormLabel>
+              <I18nProvider locale="en-GB">
+                <DatePicker
+                  errorMessage={form.formState.errors.hiredDate?.message}
+                  isInvalid={!!form.formState.errors.hiredDate}
+                  aria-label="hired date"
+                  aria-labelledby="hired date"
+                  maxValue={today(getLocalTimeZone())}
+                  variant="bordered"
+                  showMonthAndYearPickers
+                  className="max-w-xs"
+                  value={field.value ? parseDate(field.value) : null} // Pass the Date object for compatibility
+                  onChange={(value) => {
+                    const formatted = format(
+                      value?.toDate(getLocalTimeZone()) || new Date(),
+                      "yyyy-MM-dd"
+                    );
+                    field.onChange(formatted);
+                  }} // Convert selected date back to moment
+                />
+              </I18nProvider>
             </FormItem>
           )}
         />

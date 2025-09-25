@@ -57,6 +57,7 @@ import { getInitials } from "@/lib/utils";
 import Link from "next/link";
 import ConfirmationModal from "../modals/confirmation-modal";
 import { Employee } from "@/types/types";
+import { format } from "date-fns";
 
 export const schema = z.object({
   id: z.number(),
@@ -70,6 +71,7 @@ export const schema = z.object({
     .min(1, { message: "Password is required." })
     .optional(),
   role: z.string().trim().min(1, { message: "Role is required." }),
+  hiredDate: z.string().trim().min(1, { message: "Hired date is required." }),
 });
 
 function CustomTableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
@@ -164,6 +166,13 @@ export function EmployeeTable({
             </Badge>
           )}
         </div>
+      ),
+    },
+    {
+      accessorKey: "hiredDate",
+      header: () => <div className="w-full">Hired Date</div>,
+      cell: ({ row }) => (
+        <p>{format(new Date(row.original.hiredDate), "dd MMMM yyyy")}</p>
       ),
     },
     {
