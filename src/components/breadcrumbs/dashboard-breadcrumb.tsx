@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { BREADCRUMBS_ROUTES } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
@@ -30,13 +31,21 @@ export default function DashboardBreadcrumb() {
                 {/* Return page if index == segmentsURL.length - 1 */}
                 {index === segmentsURL.length - 1 ? (
                   <BreadcrumbPage>
-                    {segment.charAt(0).toUpperCase() + segment.slice(1)}
+                    {BREADCRUMBS_ROUTES.find(
+                      (item) =>
+                        item.segment?.toLowerCase() === segment?.toLowerCase()
+                    )?.name ||
+                      segment.charAt(0).toUpperCase() + segment.slice(1)}
                   </BreadcrumbPage>
                 ) : (
                   // Otherwise return link
                   <BreadcrumbLink asChild>
                     <Link href={`${url}`}>
-                      {segment.charAt(0).toUpperCase() + segment.slice(1)}
+                      {BREADCRUMBS_ROUTES.find(
+                        (item) =>
+                          item.segment?.toLowerCase() === segment?.toLowerCase()
+                      )?.name ||
+                        segment.charAt(0).toUpperCase() + segment.slice(1)}
                     </Link>
                   </BreadcrumbLink>
                 )}
