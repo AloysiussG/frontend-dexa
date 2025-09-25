@@ -11,7 +11,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
+      <Card className="overflow-hidden p-0 border-none">
         <CardContent className="grid p-0 md:grid-cols-2 min-h-[28rem]">
           <form className="p-6 md:p-8 md:pb-10">
             <div className="flex flex-col gap-6">
@@ -49,12 +49,23 @@ export function LoginForm({
           </form>
           <div className="bg-muted relative hidden md:flex">
             <Image
-              className="dark:invert object-cover"
-              src="/dexa-medica-2.jpg"
+              className="dark:invert object-cover object-center"
+              src="/dexa-medica-3.jpg"
               alt="Banner"
               width={1920}
               height={1080}
               priority
+            />
+
+            {/* Vignette Overlay */}
+            <div className="dark:invert absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/75 pointer-events-none" />
+
+            <Image
+              className="dark:invert object-contain absolute top-6 right-6 w-1/4"
+              src="/logo-white.png"
+              alt="Logo Dexa Group"
+              width={1920}
+              height={1080}
             />
           </div>
         </CardContent>
