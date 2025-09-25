@@ -117,6 +117,13 @@ export function EmployeeTable({
 
   const columns: ColumnDef<z.infer<typeof schema>>[] = [
     {
+      accessorKey: "id",
+      header: () => <div className="w-full text-center">ID</div>,
+      cell: ({ row }) => (
+        <p className="min-w-8 text-center">{row.original.id}</p>
+      ),
+    },
+    {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => {
@@ -219,7 +226,7 @@ export function EmployeeTable({
 
   return (
     <div className="w-full flex flex-col justify-start gap-6">
-      <div className="flex items-center">
+      <div className="flex items-center gap-4">
         <Input
           variant="bordered"
           placeholder="Search by name..."
