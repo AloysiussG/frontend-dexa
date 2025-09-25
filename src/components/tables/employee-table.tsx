@@ -54,6 +54,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@heroui/react";
 import { getInitials } from "@/lib/utils";
+import Link from "next/link";
 
 export const schema = z.object({
   id: z.number(),
@@ -199,7 +200,12 @@ export function EmployeeTable({
           }
           className="max-w-sm"
         />
-        <HeroButton variant="bordered" className="ms-auto w-fit">
+        <HeroButton
+          as={Link}
+          href="/dashboard/employees/add"
+          variant="bordered"
+          className="ms-auto w-fit"
+        >
           <IconPlus />
           <span className="hidden lg:inline">Add Employee</span>
         </HeroButton>

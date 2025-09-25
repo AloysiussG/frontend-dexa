@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { Button, Input } from "@heroui/react";
+import { Input } from "@heroui/react";
 import { Label } from "@/components/ui/label";
+import PrimaryButton from "../buttons/primary-button";
 
 export function LoginForm({
   className,
@@ -42,12 +43,7 @@ export function LoginForm({
                 />
               </div>
               <div className="pt-2">
-                <Button
-                  type="submit"
-                  className="w-full bg-dexa-primary text-white"
-                >
-                  Login
-                </Button>
+                <PrimaryButton type="submit">Login</PrimaryButton>
               </div>
             </div>
           </form>
@@ -64,8 +60,8 @@ export function LoginForm({
         </CardContent>
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        2025 Dexa Group. Built by Seto Galih for Dexa Group Full-Stack Developer
-        Skill Test.
+        2025 Dexa Group — Built by Aloysius Gonzaga Seto Galih D. for Dexa Group
+        Full-Stack Developer Skill Test
       </div>
     </div>
   );
