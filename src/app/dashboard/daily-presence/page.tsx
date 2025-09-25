@@ -9,7 +9,9 @@ import { Button } from "@heroui/react";
 import Link from "next/link";
 
 export default function Page() {
-  const [currentTime, setCurrentTime] = useState<string>("");
+  const [currentTime, setCurrentTime] = useState<string>(
+    format(new Date(), "yyyy-MM-dd HH:mm:ss")
+  );
   const [checkedIn, setCheckedIn] = useState<boolean>(false);
   const [checkInTime, setCheckInTime] = useState<string | null>(null);
   const [checkedOut, setCheckedOut] = useState<boolean>(false);
@@ -18,20 +20,20 @@ export default function Page() {
   // Update current time every second
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(format(new Date(), "PPpp")); // Example: Sep 24, 2025, 2:45:03 PM
+      setCurrentTime(format(new Date(), "yyyy-MM-dd HH:mm:ss")); // Example: Sep 24, 2025, 2:45:03 PM
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
   const handleCheckIn = () => {
     setCheckedIn(true);
-    setCheckInTime(format(new Date(), "PPpp"));
+    setCheckInTime(format(new Date(), "yyyy-MM-dd HH:mm:ss"));
     // TODO: route to check-in page with image upload
   };
 
   const handleCheckOut = () => {
     setCheckedOut(true);
-    setCheckOutTime(format(new Date(), "PPpp"));
+    setCheckOutTime(format(new Date(), "yyyy-MM-dd HH:mm:ss"));
   };
 
   const workedMinutes =
@@ -53,70 +55,84 @@ export default function Page() {
               <CardTitle className="text-lg">Current Time</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{currentTime}</p>
+              <p className="text-2xl font-bold">
+                {currentTime &&
+                  format(new Date(currentTime), "dd MMMM yyyy, h:mm:ss a")}
+              </p>
             </CardContent>
           </Card>
 
-          {/* Check-In */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Check-In</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              {!checkedIn ? (
-                <>
-                  <p className="text-muted-foreground">
-                    You haven’t checked in yet for today.
-                  </p>
-                  <Button
-                    variant="shadow"
-                    className="bg-black text-white"
-                    as={Link}
-                    href="/dashboard/daily-presence/check-in"
-                  >
-                    Check-In
-                  </Button>
-                </>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Badge variant="default">Checked In</Badge>
-                  <p className="font-medium">at {checkInTime}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4 md:gap-6">
+            {/* Check-In */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Check-In</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                {!checkedIn ? (
+                  <>
+                    <p className="text-muted-foreground">
+                      You haven’t checked in yet for today.
+                    </p>
+                    <Button
+                      variant="flat"
+                      as={Link}
+                      href="/dashboard/daily-presence/check-in"
+                    >
+                      Check-In
+                    </Button>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <Badge variant="default">Checked In</Badge>
+                    <p className="font-medium">
+                      at{" "}
+                      {checkInTime &&
+                        format(
+                          new Date(checkInTime),
+                          "dd MMMM yyyy, h:mm:ss a"
+                        )}
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-          {/* Check-Out */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Check-Out</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              {!checkedIn ? (
-                <p className="text-muted-foreground">
-                  Please check-in before checking out.
-                </p>
-              ) : !checkedOut ? (
-                <>
+            {/* Check-Out */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Check-Out</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                {!checkedIn ? (
                   <p className="text-muted-foreground">
-                    You haven’t checked out yet today.
+                    Please check-in before checking out.
                   </p>
-                  <Button
-                    variant="shadow"
-                    className="bg-black text-white"
-                    onPress={handleCheckOut}
-                  >
-                    Check-Out
-                  </Button>
-                </>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary">Checked Out</Badge>
-                  <p className="font-medium">at {checkOutTime}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                ) : !checkedOut ? (
+                  <>
+                    <p className="text-muted-foreground">
+                      You haven’t checked out yet today.
+                    </p>
+                    <Button variant="flat" onPress={handleCheckOut}>
+                      Check-Out
+                    </Button>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <Badge variant="secondary">Checked Out</Badge>
+                    <p className="font-medium">
+                      at{" "}
+                      {checkOutTime &&
+                        format(
+                          new Date(checkOutTime),
+                          "dd MMMM yyyy, h:mm:ss a"
+                        )}
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Worked hours summary */}
           {workedMinutes !== null && (
