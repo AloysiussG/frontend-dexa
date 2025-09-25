@@ -1,5 +1,6 @@
 "use client";
 
+import { SiteHeader } from "@/components/headers/app-header";
 import { AppSidebar } from "@/components/sidebars/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
@@ -14,7 +15,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }
     >
       <AppSidebar variant="inset" />
-      <SidebarInset>{children}</SidebarInset>
+      <SidebarInset>
+        <SiteHeader />
+        {children}
+      </SidebarInset>
     </SidebarProvider>
   );
 }

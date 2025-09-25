@@ -1,5 +1,8 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import DashboardBreadcrumb from "../breadcrumbs/dashboard-breadcrumb";
 
 export function SiteHeader() {
   return (
@@ -10,7 +13,7 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">Page</h1>
+        <DashboardBreadcrumb />
         <h3 className="ml-auto flex items-center gap-2 text-base font-medium">
           HR Employee
         </h3>
