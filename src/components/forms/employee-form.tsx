@@ -9,7 +9,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { addToast, Input, Select, SelectItem } from "@heroui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +23,7 @@ const roles = [
   { label: "Employee", value: "EMPLOYEE" },
 ] as const;
 
-const formSchema = schema;
+const formSchema = schema.omit({ id: true }); // Omit 'id' for form validation as it's not needed when adding/editing
 type FormValues = z.infer<typeof formSchema>;
 type FormValuesExtendedProps = FormValues & { id?: number };
 
@@ -84,7 +83,12 @@ export default function EmployeeForm({
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultValuesFromData,
+    defaultValues: defaultValuesFromData || {
+      name: "",
+      email: "",
+      password: "",
+      role: "",
+    },
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -110,18 +114,17 @@ export default function EmployeeForm({
           name="name"
           render={({ field }) => (
             <FormItem className="gap-3">
-              <FormLabel>Employee Name</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  errorMessage={form.formState.errors?.name?.message}
                   variant="bordered"
                   id="name"
                   placeholder="e.g. John Doe"
                   {...field}
+                  errorMessage={form.formState.errors.name?.message}
+                  isInvalid={!!form.formState.errors.name}
                 />
               </FormControl>
-              {/* <FormDescription>Example: John Doe</FormDescription> */}
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -137,12 +140,29 @@ export default function EmployeeForm({
                   id="email"
                   placeholder="e.g. john.worker@dexagroup.com"
                   {...field}
+                  errorMessage={form.formState.errors.email?.message}
+                  isInvalid={!!form.formState.errors.email}
                 />
               </FormControl>
-              {/* <FormDescription>
-                Example: john.worker@dexagroup.com
-              </FormDescription> */}
-              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem className="gap-3">
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input
+                  variant="bordered"
+                  id="password"
+                  placeholder="Enter the employee's password"
+                  {...field}
+                  errorMessage={form.formState.errors.password?.message}
+                  isInvalid={!!form.formState.errors.password}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
@@ -153,6 +173,8 @@ export default function EmployeeForm({
             <FormItem className="flex flex-col gap-3">
               <FormLabel>Role</FormLabel>
               <Select
+                errorMessage={form.formState.errors.role?.message}
+                isInvalid={!!form.formState.errors.role}
                 aria-label="select-role"
                 aria-labelledby="select-role"
                 placeholder="Select the role"
@@ -175,7 +197,6 @@ export default function EmployeeForm({
                   <SelectItem key={role.value}>{role.label}</SelectItem>
                 ))}
               </Select>
-              <FormMessage />
             </FormItem>
           )}
         />

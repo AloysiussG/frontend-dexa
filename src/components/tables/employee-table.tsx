@@ -58,9 +58,12 @@ import Link from "next/link";
 
 export const schema = z.object({
   id: z.number(),
-  name: z.string(),
-  email: z.string(),
-  role: z.string(),
+  name: z.string().trim().min(1, {
+    message: "Employee name is required.",
+  }),
+  email: z.string().trim().min(1, { message: "Email is required." }),
+  password: z.string().trim().min(1, { message: "Password is required." }),
+  role: z.string().trim().min(1, { message: "Role is required." }),
 });
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
@@ -109,7 +112,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     id: "actions",
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -122,7 +125,11 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/dashboard/employees/edit/${row.original.id}`}>
+              Edit
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
         </DropdownMenuContent>
@@ -173,7 +180,7 @@ export function EmployeeTable({
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row?.id?.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
