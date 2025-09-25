@@ -24,18 +24,22 @@ const roles = [
 ] as const;
 
 const formSchema = schema.omit({ id: true }); // Omit 'id' for form validation as it's not needed when adding/editing
+const formSchemaWithoutPassword = formSchema.omit({ password: true }); // Omit 'password' for edit form validation
 type FormValues = z.infer<typeof formSchema>;
+type FormValuesWithoutPassword = Omit<FormValues, "password">;
 type FormValuesExtendedProps = FormValues & { id?: number };
 
 export default function EmployeeForm({
   defaultValuesFromData,
+  withPassword = true,
 }: {
   defaultValuesFromData?: Partial<FormValuesExtendedProps>;
+  withPassword?: boolean;
 }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { mutateAsync: add } = useMutation({
-    mutationFn: async (data: FormValues) => {
+    mutationFn: async (data: FormValues | FormValuesWithoutPassword) => {
       return await axios.post(`/api/employees`, data);
     },
     onSuccess: (res) => {
@@ -56,7 +60,7 @@ export default function EmployeeForm({
     },
   });
   const { mutateAsync: edit } = useMutation({
-    mutationFn: async (data: FormValues) => {
+    mutationFn: async (data: FormValues | FormValuesWithoutPassword) => {
       return await axios.put(
         `/api/employees/${defaultValuesFromData?.id}`,
         data
@@ -81,8 +85,10 @@ export default function EmployeeForm({
     },
   });
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues | FormValuesWithoutPassword>({
+    resolver: zodResolver(
+      withPassword ? formSchema : formSchemaWithoutPassword
+    ),
     defaultValues: defaultValuesFromData || {
       name: "",
       email: "",
@@ -91,7 +97,7 @@ export default function EmployeeForm({
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValues | FormValuesWithoutPassword) => {
     if (defaultValuesFromData) {
       await edit(data);
     } else {
@@ -147,25 +153,34 @@ export default function EmployeeForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="gap-3">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  variant="bordered"
-                  id="password"
-                  placeholder="Enter the employee's password"
-                  {...field}
-                  errorMessage={form.formState.errors.password?.message}
-                  isInvalid={!!form.formState.errors.password}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        {withPassword && (
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="gap-3">
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    variant="bordered"
+                    id="password"
+                    placeholder="Enter the employee's password"
+                    {...field}
+                    errorMessage={
+                      "password" in form.formState.errors
+                        ? form.formState.errors.password?.message
+                        : undefined
+                    }
+                    isInvalid={
+                      "password" in form.formState.errors &&
+                      !!form.formState.errors.password
+                    }
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="role"

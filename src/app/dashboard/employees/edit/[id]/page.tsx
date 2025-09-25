@@ -25,7 +25,10 @@ export default function Page({ params }: Props) {
             description="Add or edit your employees here."
           />
           <div className="max-w-xl">
-            <EmployeeForm defaultValuesFromData={employee} />
+            <EmployeeForm
+              defaultValuesFromData={employee}
+              withPassword={false}
+            />
           </div>
         </div>
       </div>
