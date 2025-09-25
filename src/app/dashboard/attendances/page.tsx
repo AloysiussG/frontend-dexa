@@ -1,3 +1,4 @@
+import { DatePicker } from "@/components/calendars/datepicker";
 import PageTitle from "@/components/headers/page-title";
 
 export default function Page() {
@@ -9,6 +10,9 @@ export default function Page() {
             title="Attendances"
             description="View your employee attendances here."
           />
+          <div className="">
+            <DatePicker />
+          </div>
         </div>
       </div>
     </div>
