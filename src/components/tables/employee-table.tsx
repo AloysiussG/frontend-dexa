@@ -28,7 +28,7 @@ import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Button as HeroButton, User } from "@heroui/react";
+import { Button as HeroButton, useDisclosure, User } from "@heroui/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,6 +55,8 @@ import {
 import { Input } from "@heroui/react";
 import { getInitials } from "@/lib/utils";
 import Link from "next/link";
+import ConfirmationModal from "../modals/confirmation-modal";
+import { Employee } from "@/types/types";
 
 export const schema = z.object({
   id: z.number(),
@@ -65,78 +67,6 @@ export const schema = z.object({
   password: z.string().trim().min(1, { message: "Password is required." }),
   role: z.string().trim().min(1, { message: "Role is required." }),
 });
-
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => {
-      return (
-        <User
-          avatarProps={{
-            radius: "lg",
-            src: row.original.name,
-            showFallback: true,
-            name: getInitials(row.original.name),
-          }}
-          description={row.original.email}
-          name={row.original.name}
-        >
-          {row.original.name}
-        </User>
-      );
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: "email",
-    header: () => <div className="w-full">Email</div>,
-    cell: ({ row }) => <p>{row.original.email}</p>,
-  },
-  {
-    accessorKey: "role",
-    header: "Role",
-    cell: ({ row }) => (
-      <div className="w-32">
-        {row.original.role == "HR" ? (
-          <Badge variant="default" className="px-1.5">
-            {row.original.role}
-          </Badge>
-        ) : (
-          <Badge variant="outline" className="text-muted-foreground px-1.5">
-            {row.original.role}
-          </Badge>
-        )}
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem asChild>
-            <Link href={`/dashboard/employees/edit/${row.original.id}`}>
-              Edit
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
-];
 
 function CustomTableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   return (
@@ -158,6 +88,17 @@ export function EmployeeTable({
 }: {
   data: z.infer<typeof schema>[];
 }) {
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const [selectedItem, setSelectedItem] = React.useState<Employee | null>(null);
+  const handleOpenModal = (item: Employee) => {
+    setSelectedItem(item);
+    onOpen();
+  };
+  const handleDelete = (id: number | undefined) => {
+    console.log("Delete item with id:", id);
+    onClose();
+  };
+
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -169,6 +110,83 @@ export function EmployeeTable({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const columns: ColumnDef<z.infer<typeof schema>>[] = [
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => {
+        return (
+          <User
+            avatarProps={{
+              radius: "lg",
+              src: row.original.name,
+              showFallback: true,
+              name: getInitials(row.original.name),
+            }}
+            description={row.original.email}
+            name={row.original.name}
+          >
+            {row.original.name}
+          </User>
+        );
+      },
+      enableHiding: false,
+    },
+    {
+      accessorKey: "email",
+      header: () => <div className="w-full">Email</div>,
+      cell: ({ row }) => <p>{row.original.email}</p>,
+    },
+    {
+      accessorKey: "role",
+      header: "Role",
+      cell: ({ row }) => (
+        <div className="w-32">
+          {row.original.role == "HR" ? (
+            <Badge variant="default" className="px-1.5">
+              {row.original.role}
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="text-muted-foreground px-1.5">
+              {row.original.role}
+            </Badge>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+              size="icon"
+            >
+              <IconDotsVertical />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-32">
+            <DropdownMenuItem asChild>
+              <Link href={`/dashboard/employees/edit/${row.original.id}`}>
+                Edit
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => handleOpenModal(row.original)}
+              variant="destructive"
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
 
   const table = useReactTable({
     data: initialData,
@@ -331,6 +349,19 @@ export function EmployeeTable({
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        title="Are you sure?"
+        desc={
+          <p>
+            Press confirm if you want to delete this employee:{" "}
+            <strong className="text-default-700">{selectedItem?.name}</strong>
+          </p>
+        }
+        onOpenChange={onOpenChange}
+        isOpen={isOpen}
+        onConfirm={() => handleDelete(selectedItem?.id)}
+        // isLoadingConfirm={isPending}
+      />
     </div>
   );
 }
