@@ -21,7 +21,7 @@
     "id": 3,
     "name": "Bob Worker",
     "email": "bob.worker@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-21T09:00:00.000Z",
     "updatedAt": "2025-09-21T09:00:00.000Z",
     "hiredDate": "2025-02-15"
@@ -30,7 +30,7 @@
     "id": 4,
     "name": "Charlie Staff",
     "email": "charlie.staff@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-21T09:15:00.000Z",
     "updatedAt": "2025-09-21T09:15:00.000Z",
     "hiredDate": "2025-02-15"
@@ -39,7 +39,7 @@
     "id": 5,
     "name": "Diana Employee",
     "email": "diana.emp@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-22T10:00:00.000Z",
     "updatedAt": "2025-09-22T10:00:00.000Z",
     "hiredDate": "2025-02-15"
@@ -48,7 +48,7 @@
     "id": 6,
     "name": "Ethan Worker",
     "email": "ethan.worker@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-22T10:30:00.000Z",
     "updatedAt": "2025-09-22T10:30:00.000Z",
     "hiredDate": "2025-02-15"
@@ -57,7 +57,7 @@
     "id": 7,
     "name": "Fiona Staff",
     "email": "fiona.staff@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-23T11:00:00.000Z",
     "updatedAt": "2025-09-23T11:00:00.000Z",
     "hiredDate": "2025-02-15"
@@ -66,7 +66,7 @@
     "id": 8,
     "name": "George Worker",
     "email": "george.worker@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-23T11:15:00.000Z",
     "updatedAt": "2025-09-23T11:15:00.000Z",
     "hiredDate": "2025-02-15"
@@ -75,7 +75,7 @@
     "id": 9,
     "name": "Hannah Employee",
     "email": "hannah.emp@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-24T12:00:00.000Z",
     "updatedAt": "2025-09-24T12:00:00.000Z",
     "hiredDate": "2025-03-15"
@@ -84,7 +84,7 @@
     "id": 10,
     "name": "Ian Staff",
     "email": "ian.staff@company.com",
-    "role": "EMPLOYEE",
+    "role": "Employee",
     "createdAt": "2025-09-24T12:30:00.000Z",
     "updatedAt": "2025-09-24T12:30:00.000Z",
     "hiredDate": "2025-03-15"

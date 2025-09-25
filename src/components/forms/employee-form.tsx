@@ -23,7 +23,7 @@ import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 
 const roles = [
   { label: "HR", value: "HR" },
-  { label: "Employee", value: "EMPLOYEE" },
+  { label: "Employee", value: "Employee" },
 ] as const;
 
 const formSchema = schema.omit({ id: true }); // Omit 'id' for form validation as it's not needed when adding/editing

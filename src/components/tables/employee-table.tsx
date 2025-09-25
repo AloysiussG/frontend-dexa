@@ -374,7 +374,9 @@ export function EmployeeTable({
         desc={
           <p>
             Press confirm if you want to delete this employee:{" "}
-            <strong className="text-default-700">{selectedItem?.name}</strong>
+            <strong className="text-default-700">
+              {selectedItem?.name} ({selectedItem?.role})
+            </strong>
           </p>
         }
         onOpenChange={onOpenChange}
