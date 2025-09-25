@@ -1,4 +1,6 @@
 import PageTitle from "@/components/headers/page-title";
+import { EmployeeTable } from "@/components/tables/employee-table";
+import employeeData from "@/data/employee-data.json";
 
 export default function Page() {
   return (
@@ -9,6 +11,7 @@ export default function Page() {
             title="Employees"
             description="Manage your employees here."
           />
+          <EmployeeTable data={employeeData} />
         </div>
       </div>
     </div>
