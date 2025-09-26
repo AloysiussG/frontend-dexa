@@ -1,3 +1,4 @@
+import CheckInForm from "@/components/forms/check-in-form";
 import PageTitle from "@/components/headers/page-title";
 
 export default function Page() {
@@ -7,9 +8,11 @@ export default function Page() {
         <div className="flex flex-col gap-4 py-4 px-4 md:gap-6 md:py-6 md:px-6">
           <PageTitle
             title="Check-In"
-            description="Check in for your daily presence here."
+            description="Check in for your WFH daily presence here."
           />
-          <div className="max-w-xl">{/* <EmployeeForm /> */}</div>
+          <div className="max-w-xl">
+            <CheckInForm />
+          </div>
         </div>
       </div>
     </div>
