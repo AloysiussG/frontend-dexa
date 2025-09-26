@@ -1,5 +1,8 @@
 import { DatePicker } from "@/components/calendars/datepicker";
 import PageTitle from "@/components/headers/page-title";
+import { AttendanceTable } from "@/components/tables/attendance-table";
+import attendanceData from "@/data/attendance-data.json";
+import { Attendance } from "@/types/types";
 
 export default function Page() {
   return (
@@ -13,6 +16,7 @@ export default function Page() {
           <div className="">
             <DatePicker />
           </div>
+          <AttendanceTable data={attendanceData as Attendance[]} />
         </div>
       </div>
     </div>

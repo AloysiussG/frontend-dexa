@@ -14,6 +14,19 @@ export function getInitials(name: string) {
   return parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase();
 }
 
+export function getPossessive(name: string): string {
+  // Take the first word only
+  const firstWord = name.trim().split(" ")[0];
+
+  // If it already ends with "s" or "S", add only an apostrophe
+  if (firstWord.endsWith("s") || firstWord.endsWith("S")) {
+    return `${firstWord}'`;
+  }
+
+  // Otherwise add `'s`
+  return `${firstWord}'s`;
+}
+
 export const BREADCRUMBS_ROUTES = [
   { name: "Dashboard", href: "/dashboard", segment: "dashboard" },
   {

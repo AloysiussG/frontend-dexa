@@ -2,11 +2,15 @@
 
 import * as React from "react";
 import {
+  IconAlertCircleFilled,
   IconChevronLeft,
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
+  IconCircleCheckFilled,
+  IconCircleXFilled,
   IconDotsVertical,
+  IconLoader,
   IconPlus,
 } from "@tabler/icons-react";
 import {
@@ -53,28 +57,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@heroui/react";
-import { getInitials } from "@/lib/utils";
+import { getInitials, getPossessive } from "@/lib/utils";
 import Link from "next/link";
 import ConfirmationModal from "../modals/confirmation-modal";
-import { Employee } from "@/types/types";
+import { Attendance } from "@/types/types";
 import { format } from "date-fns";
 
-export const schema = z.object({
+export const attendanceSchema = z.object({
   id: z.number(),
   name: z.string().trim().min(1, {
-    message: "Employee name is required.",
+    message: "Attendance name is required.",
   }),
-  email: z.string().trim().min(1, { message: "Email is required." }),
-  password: z
+  role: z.string().trim().min(1, { message: "Role is required." }),
+  date: z.string().trim().min(1, { message: "Attendance date is required." }),
+  checkInTime: z
     .string()
     .trim()
-    .min(1, { message: "Password is required." })
-    .optional(),
-  role: z.string().trim().min(1, { message: "Role is required." }),
-  hiredDate: z.string().trim().min(1, { message: "Hired date is required." }),
+    .min(1, { message: "Attendance check-in time is required." }),
+  checkOutTime: z
+    .string()
+    .trim()
+    .min(1, { message: "Attendance check-out time is required." }),
+  status: z
+    .string()
+    .trim()
+    .min(1, { message: "Attendance status is required." }),
 });
 
-function CustomTableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
+function CustomTableRow({
+  row,
+}: {
+  row: Row<z.infer<typeof attendanceSchema>>;
+}) {
   return (
     <TableRow
       data-state={row.getIsSelected() && "selected"}
@@ -89,14 +103,16 @@ function CustomTableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   );
 }
 
-export function EmployeeTable({
+export function AttendanceTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[];
+  data: z.infer<typeof attendanceSchema>[];
 }) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [selectedItem, setSelectedItem] = React.useState<Employee | null>(null);
-  const handleOpenModal = (item: Employee) => {
+  const [selectedItem, setSelectedItem] = React.useState<Attendance | null>(
+    null
+  );
+  const handleOpenModal = (item: Attendance) => {
     setSelectedItem(item);
     onOpen();
   };
@@ -117,7 +133,7 @@ export function EmployeeTable({
     pageSize: 10,
   });
 
-  const columns: ColumnDef<z.infer<typeof schema>>[] = [
+  const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
     {
       accessorKey: "id",
       header: () => <div className="w-full text-center">ID</div>,
@@ -140,7 +156,6 @@ export function EmployeeTable({
               showFallback: true,
               name: getInitials(row.original.name),
             }}
-            description={row.original.email}
             name={row.original.name}
           >
             {row.original.name}
@@ -148,11 +163,6 @@ export function EmployeeTable({
         );
       },
       enableHiding: false,
-    },
-    {
-      accessorKey: "email",
-      header: () => <div className="w-full">Email</div>,
-      cell: ({ row }) => <p>{row.original.email}</p>,
     },
     {
       accessorKey: "role",
@@ -172,10 +182,50 @@ export function EmployeeTable({
       ),
     },
     {
-      accessorKey: "hiredDate",
-      header: () => <div className="w-full">Hired Date</div>,
+      accessorKey: "date",
+      header: () => <div className="w-full">Date</div>,
       cell: ({ row }) => (
-        <p>{format(new Date(row.original.hiredDate), "dd MMMM yyyy")}</p>
+        <p>{format(new Date(row.original.date), "dd MMMM yyyy")}</p>
+      ),
+    },
+    {
+      accessorKey: "checkInTime",
+      header: () => <div className="w-full">Check-In</div>,
+      cell: ({ row }) => (
+        <p className="font-semibold">
+          {row.original?.checkInTime
+            ? format(new Date(row.original.checkInTime), "HH:mm")
+            : "-"}
+        </p>
+      ),
+    },
+    {
+      accessorKey: "checkOutTime",
+      header: () => <div className="w-full">Check-Out</div>,
+      cell: ({ row }) => (
+        <p className="font-semibold">
+          {row.original?.checkOutTime
+            ? format(new Date(row.original.checkOutTime), "HH:mm")
+            : "-"}
+        </p>
+      ),
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => (
+        <Badge variant="outline" className="text-muted-foreground px-1.5">
+          {row.original.status === "Present" ? (
+            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+          ) : row.original.status === "Late" ? (
+            <IconAlertCircleFilled className="fill-yellow-500 dark:fill-green-400" />
+          ) : row.original.status === "Absent" ? (
+            <IconCircleXFilled className="fill-red-500 dark:fill-green-400" />
+          ) : (
+            <IconLoader />
+          )}
+          {row.original.status}
+        </Badge>
       ),
     },
     {
@@ -192,19 +242,17 @@ export function EmployeeTable({
               <span className="sr-only">Open menu</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-32">
+          <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/dashboard/employees/edit/${row.original.id}`}>
-                Edit
+              <Link href={`/dashboard/attendances/details/${row.original.id}`}>
+                View Attendance Details
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => handleOpenModal(row.original)}
-              variant="destructive"
-            >
-              Delete
-            </DropdownMenuItem>
+            {/* <DropdownMenuItem asChild>
+              <Link href={`/dashboard/attendances/edit/${row.original.id}`}>
+                View {getPossessive(row.original.name)} Full Attendances
+              </Link>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       ),
@@ -248,15 +296,6 @@ export function EmployeeTable({
           }
           className="max-w-sm"
         />
-        <HeroButton
-          as={Link}
-          href="/dashboard/employees/add"
-          variant="bordered"
-          className="ms-auto w-fit"
-        >
-          <IconPlus />
-          <span className="hidden lg:inline">Add Employee</span>
-        </HeroButton>
       </div>
 
       <div className="overflow-hidden rounded-lg border">
@@ -372,21 +411,6 @@ export function EmployeeTable({
           </div>
         </div>
       </div>
-      <ConfirmationModal
-        title="Are you sure?"
-        desc={
-          <p>
-            Press confirm if you want to delete this employee:{" "}
-            <strong className="text-default-700">
-              {selectedItem?.name} ({selectedItem?.role})
-            </strong>
-          </p>
-        }
-        onOpenChange={onOpenChange}
-        isOpen={isOpen}
-        onConfirm={() => handleDelete(selectedItem?.id)}
-        // isLoadingConfirm={isPending}
-      />
     </div>
   );
 }

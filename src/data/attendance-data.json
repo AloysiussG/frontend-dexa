@@ -1,0 +1,102 @@
+[
+  {
+    "id": 301,
+    "userId": 1,
+    "name": "Alice HR",
+    "role": "HR",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 07:55:21",
+    "checkOutTime": "2025-09-24 17:12:33",
+    "status": "Present"
+  },
+  {
+    "id": 302,
+    "userId": 2,
+    "name": "David HR",
+    "role": "HR",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 09:03:45",
+    "checkOutTime": "2025-09-24 17:10:00",
+    "status": "Late"
+  },
+  {
+    "id": 303,
+    "userId": 3,
+    "name": "Bob Worker",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 07:45:12",
+    "checkOutTime": "2025-09-24 16:59:42",
+    "status": "Present"
+  },
+  {
+    "id": 304,
+    "userId": 4,
+    "name": "Charlie Staff",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 08:10:05",
+    "checkOutTime": "2025-09-24 17:25:50",
+    "status": "Present"
+  },
+  {
+    "id": 305,
+    "userId": 5,
+    "name": "Diana Employee",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 07:58:47",
+    "checkOutTime": "2025-09-24 17:15:11",
+    "status": "Present"
+  },
+  {
+    "id": 306,
+    "userId": 6,
+    "name": "Ethan Worker",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 08:05:30",
+    "checkOutTime": "2025-09-24 17:20:15",
+    "status": "Present"
+  },
+  {
+    "id": 307,
+    "userId": 7,
+    "name": "Fiona Staff",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 07:50:22",
+    "checkOutTime": "2025-09-24 17:05:44",
+    "status": "Present"
+  },
+  {
+    "id": 308,
+    "userId": 8,
+    "name": "George Worker",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 08:15:59",
+    "checkOutTime": "2025-09-24 17:18:09",
+    "status": "Late"
+  },
+  {
+    "id": 309,
+    "userId": 9,
+    "name": "Hannah Employee",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": "2025-09-24 08:00:40",
+    "checkOutTime": null,
+    "status": "Working"
+  },
+  {
+    "id": 310,
+    "userId": 10,
+    "name": "Ian Staff",
+    "role": "Employee",
+    "date": "2025-09-24",
+    "checkInTime": null,
+    "checkOutTime": null,
+    "status": "Absent"
+  }
+]
