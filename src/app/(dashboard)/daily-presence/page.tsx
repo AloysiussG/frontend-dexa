@@ -13,8 +13,8 @@ export default function Page() {
   const [currentTime, setCurrentTime] = useState<string>(
     format(new Date(), "yyyy-MM-dd HH:mm:ss")
   );
-  const [checkedIn, setCheckedIn] = useState<boolean>(false);
-  const [checkInTime, setCheckInTime] = useState<string | null>(null);
+  const [checkedIn] = useState<boolean>(false);
+  const [checkInTime] = useState<string | null>(null);
   const [checkedOut, setCheckedOut] = useState<boolean>(false);
   const [checkOutTime, setCheckOutTime] = useState<string | null>(null);
 
@@ -25,12 +25,6 @@ export default function Page() {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleCheckIn = () => {
-    setCheckedIn(true);
-    setCheckInTime(format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-    // TODO: route to check-in page with image upload
-  };
 
   const handleCheckOut = () => {
     setCheckedOut(true);

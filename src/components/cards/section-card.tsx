@@ -6,8 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IconTrendingUp } from "@tabler/icons-react";
-import { Badge } from "@/components/ui/badge";
 
 interface SectionCardProps {
   cardTitle?: string;
@@ -15,22 +13,6 @@ interface SectionCardProps {
   cardAction?: React.ReactNode;
   cardFooter?: React.ReactNode;
 }
-
-const defaultCardAction = (
-  <Badge variant="outline">
-    <IconTrendingUp />
-    +12.5%
-  </Badge>
-);
-
-const defaultCardFooter = (
-  <>
-    <div className="line-clamp-1 flex gap-2 font-medium">
-      Trending up this month <IconTrendingUp className="size-4" />
-    </div>
-    <div className="text-muted-foreground">Visitors for the last 6 months</div>
-  </>
-);
 
 export default function SectionCard({
   cardDescription = "Card Description",

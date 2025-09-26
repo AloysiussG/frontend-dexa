@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { I18nProvider } from "@react-aria/i18n";
 import { z } from "zod";
 import {
   Form,
@@ -12,21 +11,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { addToast, DatePicker, Input, Select, SelectItem } from "@heroui/react";
+import { addToast } from "@heroui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { schema } from "../tables/employee-table";
 import PrimaryButton from "../buttons/primary-button";
-import { format } from "date-fns";
-import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import ImageDropzone from "../dropzones/image-dropzone";
-
-const roles = [
-  { label: "HR", value: "HR" },
-  { label: "Employee", value: "Employee" },
-] as const;
 
 const formSchema = z.object({
   checkInImage: z.object({

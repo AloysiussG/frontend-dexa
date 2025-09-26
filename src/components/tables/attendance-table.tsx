@@ -31,7 +31,7 @@ import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useDisclosure, User } from "@heroui/react";
+import { User } from "@heroui/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,7 +57,6 @@ import {
 import { Input } from "@heroui/react";
 import { getHrefByName, getInitials } from "@/lib/utils";
 import Link from "next/link";
-import { Attendance } from "@/types/types";
 import { format } from "date-fns";
 
 export const attendanceSchema = z.object({
@@ -106,19 +105,6 @@ export function AttendanceTable({
 }: {
   data: z.infer<typeof attendanceSchema>[];
 }) {
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [selectedItem, setSelectedItem] = React.useState<Attendance | null>(
-    null
-  );
-  const handleOpenModal = (item: Attendance) => {
-    setSelectedItem(item);
-    onOpen();
-  };
-  const handleDelete = (id: number | undefined) => {
-    console.log("Delete item with id:", id);
-    onClose();
-  };
-
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
