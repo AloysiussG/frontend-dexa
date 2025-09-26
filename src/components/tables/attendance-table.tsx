@@ -11,7 +11,6 @@ import {
   IconCircleXFilled,
   IconDotsVertical,
   IconLoader,
-  IconPlus,
 } from "@tabler/icons-react";
 import {
   ColumnDef,
@@ -32,12 +31,11 @@ import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Button as HeroButton, useDisclosure, User } from "@heroui/react";
+import { useDisclosure, User } from "@heroui/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
@@ -57,14 +55,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@heroui/react";
-import { getInitials, getPossessive } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 import Link from "next/link";
-import ConfirmationModal from "../modals/confirmation-modal";
 import { Attendance } from "@/types/types";
 import { format } from "date-fns";
 
 export const attendanceSchema = z.object({
   id: z.number(),
+  userId: z.number().optional(),
   name: z.string().trim().min(1, {
     message: "Attendance name is required.",
   }),
