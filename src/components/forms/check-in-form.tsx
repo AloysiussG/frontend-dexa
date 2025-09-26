@@ -29,16 +29,17 @@ const roles = [
 ] as const;
 
 const formSchema = z.object({
-  checkInImage: z.string().min(1, { message: "Check-In Image is required" }),
+  checkInImage: z.object({
+    url: z.string().min(1, { message: "Check-In Image is required" }),
+    id: z.string().optional(),
+  }),
 });
 type FormValues = z.infer<typeof formSchema>;
 
 export default function CheckInForm({
   defaultValuesFromData,
-  withPassword = true,
 }: {
   defaultValuesFromData?: Partial<FormValues>;
-  withPassword?: boolean;
 }) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -67,7 +68,10 @@ export default function CheckInForm({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValuesFromData || {
-      checkInImage: "",
+      checkInImage: {
+        id: "",
+        url: "",
+      },
     },
   });
 

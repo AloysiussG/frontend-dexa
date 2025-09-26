@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 export type ImageProps = {
-  id: string;
+  id?: string;
   url: string;
 };
 
@@ -14,7 +14,7 @@ type ImageDropzoneProps = {
   onDropCallback: (image: ImageProps) => void;
   onRemoveFileCallback: () => void;
   imgSrcBackground?: string;
-  imgPreview?: string;
+  imgPreview?: ImageProps;
   aspectRatio?: "16:9" | "4:3" | "1:1";
 };
 
@@ -62,7 +62,7 @@ const ImageDropzone = ({
 
   return (
     <>
-      {imgPreview ? (
+      {imgPreview && imgPreview?.url ? (
         <div className="relative">
           <Image
             width={
