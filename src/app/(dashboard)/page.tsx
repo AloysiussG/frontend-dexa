@@ -14,6 +14,7 @@ import PageTitle from "@/components/headers/page-title";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { Card } from "@heroui/react";
+import { getHrefByName } from "@/lib/utils";
 
 export default function Page() {
   const user = {
@@ -50,7 +51,7 @@ export default function Page() {
                 cardAction={<IconCheck size={28} />}
               />
               <Link
-                href="/dashboard/daily-presence"
+                href={getHrefByName("Daily Presence")}
                 className="block @xl/main:col-span-3 @5xl/main:col-span-2"
               >
                 <Card className="flex items-start justify-between rounded-2xl p-5 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors">
@@ -80,7 +81,10 @@ export default function Page() {
                   cardDescription="Employees"
                   cardAction={<IconUsers size={28} />}
                   cardFooter={
-                    <Link href="/dashboard/employees" className="block w-full">
+                    <Link
+                      href={getHrefByName("Employees")}
+                      className="block w-full"
+                    >
                       <Card className="flex flex-row items-center justify-between rounded-2xl p-4 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors">
                         <span className="text-base font-semibold">Manage</span>
                         <IconArrowUpRight className="w-6 h-6 shrink-0" />
@@ -94,7 +98,7 @@ export default function Page() {
                   cardAction={<IconListDetails size={28} />}
                   cardFooter={
                     <Link
-                      href="/dashboard/attendances"
+                      href={getHrefByName("Attendances")}
                       className="block w-full"
                     >
                       <Card className="flex flex-row items-center justify-between rounded-2xl p-4 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors">

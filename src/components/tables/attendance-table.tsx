@@ -55,7 +55,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@heroui/react";
-import { getInitials } from "@/lib/utils";
+import { getHrefByName, getInitials } from "@/lib/utils";
 import Link from "next/link";
 import { Attendance } from "@/types/types";
 import { format } from "date-fns";
@@ -242,7 +242,11 @@ export function AttendanceTable({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/dashboard/attendances/details/${row.original.id}`}>
+              <Link
+                href={`${getHrefByName("Attendance Details")}/${
+                  row.original.id
+                }`}
+              >
                 View Attendance Details
               </Link>
             </DropdownMenuItem>

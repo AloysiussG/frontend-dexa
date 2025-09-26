@@ -31,22 +31,22 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "/",
       icon: IconDashboard,
     },
     {
       title: "Daily Presence",
-      url: "/dashboard/daily-presence",
+      url: "/daily-presence",
       icon: IconCalendarEvent,
     },
     {
       title: "Employees",
-      url: "/dashboard/employees",
+      url: "/employees",
       icon: IconUsers,
     },
     {
       title: "Attendances",
-      url: "/dashboard/attendances",
+      url: "/attendances",
       icon: IconListDetails,
     },
   ],

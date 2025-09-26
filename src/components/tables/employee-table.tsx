@@ -53,7 +53,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@heroui/react";
-import { getInitials } from "@/lib/utils";
+import { getHrefByName, getInitials } from "@/lib/utils";
 import Link from "next/link";
 import ConfirmationModal from "../modals/confirmation-modal";
 import { Employee } from "@/types/types";
@@ -194,7 +194,9 @@ export function EmployeeTable({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-32">
             <DropdownMenuItem asChild>
-              <Link href={`/dashboard/employees/edit/${row.original.id}`}>
+              <Link
+                href={`${getHrefByName("Edit Employee")}/${row.original.id}`}
+              >
                 Edit
               </Link>
             </DropdownMenuItem>
@@ -250,7 +252,7 @@ export function EmployeeTable({
         />
         <HeroButton
           as={Link}
-          href="/dashboard/employees/add"
+          href={getHrefByName("Add Employee")}
           variant="bordered"
           className="ms-auto w-fit"
         >

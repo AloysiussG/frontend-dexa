@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { differenceInMinutes, format } from "date-fns";
 import { Button } from "@heroui/react";
 import Link from "next/link";
+import { getHrefByName } from "@/lib/utils";
 
 export default function Page() {
   const [currentTime, setCurrentTime] = useState<string>(
@@ -77,7 +78,7 @@ export default function Page() {
                     <Button
                       variant="flat"
                       as={Link}
-                      href="/dashboard/daily-presence/check-in"
+                      href={getHrefByName("Check-In")}
                     >
                       Check-In
                     </Button>

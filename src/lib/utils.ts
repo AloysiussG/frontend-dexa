@@ -27,24 +27,43 @@ export function getPossessive(name: string): string {
   return `${firstWord}'s`;
 }
 
+export function getHrefByName(name: string): string {
+  return (
+    BREADCRUMBS_ROUTES.find(
+      (item) => item.name?.toLowerCase() === name?.toLowerCase()
+    )?.href || ""
+  );
+}
+
 export const BREADCRUMBS_ROUTES = [
-  { name: "Dashboard", href: "/dashboard", segment: "dashboard" },
+  { name: "Dashboard", href: "", segment: "" },
   {
     name: "Daily Presence",
-    href: "/dashboard/daily-presence",
+    href: "/daily-presence",
     segment: "daily-presence",
   },
   {
     name: "Check-In",
-    href: "/dashboard/daily-presence/check-in",
+    href: "/daily-presence/check-in",
     segment: "check-in",
   },
-  { name: "Employees", href: "/dashboard/employees", segment: "employees" },
-  { name: "Add Employee", href: "/dashboard/employees/add", segment: "add" },
-  { name: "Edit Employee", href: "/dashboard/employees/edit", segment: "edit" },
+  { name: "Employees", href: "/employees", segment: "employees" },
+  { name: "Add Employee", href: "/employees/add", segment: "add" },
+  {
+    name: "Edit Employee",
+    href: "/employees/edit",
+    segment: "edit",
+    skipBreadcrumbLink: true,
+  },
   {
     name: "Attendances",
-    href: "/dashboard/attendances",
+    href: "/attendances",
     segment: "attendances",
+  },
+  {
+    name: "Attendance Details",
+    href: "/attendances/details",
+    segment: "details",
+    skipBreadcrumbLink: true,
   },
 ];

@@ -23,28 +23,31 @@ export default function DashboardBreadcrumb() {
       <BreadcrumbList>
         {segmentsURL.map((segment, index) => {
           if (segment !== "") url += `/${segment}`;
-
           if (index === 0) return <div className="" key={999}></div>; // Skip the first empty segment
+
+          const breadItem = BREADCRUMBS_ROUTES.find(
+            (item) => item.segment?.toLowerCase() === segment?.toLowerCase()
+          );
+
           return (
             <Fragment key={index}>
               <BreadcrumbItem className="hidden md:block">
                 {/* Return page if index == segmentsURL.length - 1 */}
                 {index === segmentsURL.length - 1 ? (
                   <BreadcrumbPage>
-                    {BREADCRUMBS_ROUTES.find(
-                      (item) =>
-                        item.segment?.toLowerCase() === segment?.toLowerCase()
-                    )?.name ||
+                    {breadItem?.name ||
+                      segment.charAt(0).toUpperCase() + segment.slice(1)}
+                  </BreadcrumbPage>
+                ) : breadItem?.skipBreadcrumbLink == true ? (
+                  <BreadcrumbPage className="text-muted-foreground">
+                    {breadItem?.name ||
                       segment.charAt(0).toUpperCase() + segment.slice(1)}
                   </BreadcrumbPage>
                 ) : (
                   // Otherwise return link
                   <BreadcrumbLink asChild>
                     <Link href={`${url}`}>
-                      {BREADCRUMBS_ROUTES.find(
-                        (item) =>
-                          item.segment?.toLowerCase() === segment?.toLowerCase()
-                      )?.name ||
+                      {breadItem?.name ||
                         segment.charAt(0).toUpperCase() + segment.slice(1)}
                     </Link>
                   </BreadcrumbLink>

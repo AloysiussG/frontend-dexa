@@ -15,11 +15,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }
     >
       <AppSidebar variant="inset" />
-      <SidebarInset>
-        <div className="">
-          <SiteHeader />
-          {children}
-        </div>
+      <SidebarInset className="bg-gradient-to-br from-transparent via-transparent to-red-200/25">
+        <SiteHeader />
+        {children}
       </SidebarInset>
     </SidebarProvider>
   );
