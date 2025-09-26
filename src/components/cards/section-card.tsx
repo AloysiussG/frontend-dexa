@@ -40,9 +40,9 @@ export default function SectionCard({
 }: SectionCardProps) {
   return (
     <Card className="@container/card">
-      <CardHeader>
+      <CardHeader className="h-full">
         <CardDescription>{cardDescription}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl self-end">
           {cardTitle}
         </CardTitle>
         {cardAction && <CardAction>{cardAction}</CardAction>}
