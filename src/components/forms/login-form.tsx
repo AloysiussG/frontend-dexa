@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, getHrefByName } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { addToast, Input } from "@heroui/react";
@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import z from "zod";
-import axios from "@/lib/axios";
 import {
   Form,
   FormControl,
@@ -17,6 +16,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import { loginApi } from "@/lib/services";
 
 const formSchema = z.object({
   email: z
@@ -37,16 +37,16 @@ export function LoginForm({
 
   const { mutateAsync: login } = useMutation({
     mutationFn: async (data: FormValues) => {
-      return await axios.post(`/api/login`, data);
+      return await loginApi(data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
       addToast({
-        title: res.data?.message,
+        title: res.data?.message || "Login successful.",
       });
-      router.push("/dashboard");
+      router.push(getHrefByName("Dashboard"));
     },
     onError: (error: AxiosError<{ message?: string }>) => {
       addToast({

@@ -1,6 +1,11 @@
 import { addToast } from "@heroui/react";
 import axios from "./axios";
 
+export async function loginApi(data: { email: string; password: string }) {
+  const res = await axios.post(`/api/auth/login`, data);
+  return res.data; // { id, name, token }
+}
+
 export async function uploadImage(
   file: File
 ): Promise<{ id: string; url: string }> {
@@ -20,7 +25,7 @@ export async function uploadImage(
   formData.append("file", file);
 
   const promise = axios
-    .post("/api/upload/image", formData, {
+    .post(`/api/upload/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

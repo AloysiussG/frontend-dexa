@@ -28,11 +28,11 @@ export function getPossessive(name: string): string {
 }
 
 export function getHrefByName(name: string): string {
-  return (
+  const route =
     BREADCRUMBS_ROUTES.find(
       (item) => item.name?.toLowerCase() === name?.toLowerCase()
-    )?.href || ""
-  );
+    )?.href || "";
+  return route ? route : "/";
 }
 
 export const BREADCRUMBS_ROUTES = [
