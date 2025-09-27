@@ -35,7 +35,7 @@ export function NavUser({ user }: { user?: User }) {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger
-            className="border bg-gradient-to-r from-blue-200/60 via-white to-red-200/25 h-full"
+            className="border bg-gradient-to-r from-blue-200/60 via-white to-red-200/25 h-full cursor-pointer"
             asChild
           >
             <SidebarMenuButton
