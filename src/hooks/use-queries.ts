@@ -51,7 +51,7 @@ export function useCreateEmployee() {
       addToast({
         title: res.data?.message || "Employee added successfully.",
       });
-      router.push("/profile/skills");
+      router.push(getHrefByName("Employees"));
     },
     onError,
   });
@@ -81,7 +81,7 @@ export function useUpdateEmployee() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string, data: unknown) => {
+    mutationFn: async ({ id, data }: { id: string; data: unknown }) => {
       return await updateEmployeeApi(id, data);
     },
     onSuccess: (res) => {
@@ -91,7 +91,7 @@ export function useUpdateEmployee() {
       addToast({
         title: res.data?.message || "Employee updated successfully.",
       });
-      router.push("/profile/skills");
+      router.push(getHrefByName("Employees"));
     },
     onError,
   });

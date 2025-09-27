@@ -11,15 +11,12 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { addToast, DatePicker, Input, Select, SelectItem } from "@heroui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "@/lib/axios";
-import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { DatePicker, Input, Select, SelectItem } from "@heroui/react";
 import { schema } from "../tables/employee-table";
 import PrimaryButton from "../buttons/primary-button";
 import { format } from "date-fns";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
+import { useCreateEmployee, useUpdateEmployee } from "@/hooks/use-queries";
 
 const roles = [
   { label: "HR", value: "HR" },
@@ -39,54 +36,8 @@ export default function EmployeeForm({
   defaultValuesFromData?: Partial<FormValuesExtendedProps>;
   withPassword?: boolean;
 }) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const { mutateAsync: add } = useMutation({
-    mutationFn: async (data: FormValues | FormValuesWithoutPassword) => {
-      return await axios.post(`/api/employees`, data);
-    },
-    onSuccess: (res) => {
-      queryClient.invalidateQueries({
-        queryKey: ["employees"],
-      });
-      addToast({
-        title: res.data?.message,
-      });
-      router.push("/dashboard/employees");
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      addToast({
-        title: error.response?.data?.message || "An error occurred.",
-        color: "danger",
-      });
-      console.error(error);
-    },
-  });
-  const { mutateAsync: edit } = useMutation({
-    mutationFn: async (data: FormValues | FormValuesWithoutPassword) => {
-      return await axios.put(
-        `/api/employees/${defaultValuesFromData?.id}`,
-        data
-      );
-    },
-    onSuccess: (res) => {
-      queryClient.invalidateQueries({
-        queryKey: ["employees"],
-      });
-      addToast({
-        title: res.data?.message,
-        color: "default",
-      });
-      router.push("/dashboard/employees");
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      addToast({
-        title: error.response?.data?.message || "An error occurred.",
-        color: "danger",
-      });
-      console.error(error);
-    },
-  });
+  const { mutateAsync: add } = useCreateEmployee();
+  const { mutateAsync: edit } = useUpdateEmployee();
 
   const form = useForm<FormValues | FormValuesWithoutPassword>({
     resolver: zodResolver(
@@ -102,8 +53,11 @@ export default function EmployeeForm({
   });
 
   const onSubmit = async (data: FormValues | FormValuesWithoutPassword) => {
-    if (defaultValuesFromData) {
-      await edit(data);
+    if (defaultValuesFromData && defaultValuesFromData.id) {
+      await edit({
+        id: defaultValuesFromData?.id.toString(),
+        data: data,
+      });
     } else {
       await add(data);
     }
