@@ -28,12 +28,16 @@ export function getPossessive(name: string): string {
 }
 
 export function getHrefByName(name: string): string {
+  const ALL_ROUTES = [...GENERAL_ROUTES, ...BREADCRUMBS_ROUTES];
   const route =
-    BREADCRUMBS_ROUTES.find(
-      (item) => item.name?.toLowerCase() === name?.toLowerCase()
-    )?.href || "";
+    ALL_ROUTES.find((item) => item.name?.toLowerCase() === name?.toLowerCase())
+      ?.href || "";
   return route ? route : "/";
 }
+
+export const GENERAL_ROUTES = [
+  { name: "Login", href: "/login", segment: "login" },
+];
 
 export const BREADCRUMBS_ROUTES = [
   { name: "Dashboard", href: "", segment: "" },

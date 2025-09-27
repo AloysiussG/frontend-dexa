@@ -1,13 +1,10 @@
-import { cn, getHrefByName } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { addToast, Input } from "@heroui/react";
+import { Input } from "@heroui/react";
 import PrimaryButton from "../buttons/primary-button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import z from "zod";
 import {
   Form,
@@ -16,9 +13,9 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { loginApi } from "@/lib/services";
+import { useLogin } from "@/hooks/use-queries";
 
-const formSchema = z.object({
+export const loginFormSchema = z.object({
   email: z
     .email({ error: "Invalid email address" })
     .trim()
@@ -26,46 +23,23 @@ const formSchema = z.object({
   password: z.string().trim().min(1, { message: "Password is required" }),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const { mutateAsync: login } = useLogin();
 
-  const { mutateAsync: login } = useMutation({
-    mutationFn: async (data: FormValues) => {
-      return await loginApi(data);
-    },
-    onSuccess: (res) => {
-      queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
-      addToast({
-        title: res.data?.message || "Login successful.",
-      });
-      router.push(getHrefByName("Dashboard"));
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      addToast({
-        title: error.response?.data?.message || "An error occurred.",
-        color: "danger",
-      });
-      console.error(error);
-    },
-  });
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     await login(data);
   };
 
