@@ -17,20 +17,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useAuth, useLogout } from "@/hooks/use-queries";
+import { useAuth, useLogout, User } from "@/hooks/use-queries";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser({ user }: { user?: User }) {
   const { isMobile } = useSidebar();
   const { mutateAsync: logout } = useLogout();
-  const { data: currentUser } = useAuth();
+  const { data: auth } = useAuth();
+
+  const currentUser = user || auth;
 
   const handleLogout = async () => {
     await logout();

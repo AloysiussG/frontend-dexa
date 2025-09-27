@@ -6,9 +6,9 @@ import { getHrefByName } from "@/lib/utils";
 import { AxiosError } from "axios";
 import { LoginFormValues } from "@/components/forms/login-form";
 
-type Role = "HR" | "Employee";
+export type Role = "HR" | "Employee";
 
-type User = {
+export type User = {
   name: string;
   email: string;
   role: Role;

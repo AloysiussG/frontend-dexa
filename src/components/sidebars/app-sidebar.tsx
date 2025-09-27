@@ -21,14 +21,22 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/hooks/use-queries";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
+  navEmployee: [
+    {
+      title: "Dashboard",
+      url: "/",
+      icon: IconDashboard,
+    },
+    {
+      title: "Daily Presence",
+      url: "/daily-presence",
+      icon: IconCalendarEvent,
+    },
+  ],
+  navHR: [
     {
       title: "Dashboard",
       url: "/",
@@ -53,6 +61,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: currentUser } = useAuth();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -76,10 +86,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={
+            currentUser?.role == "HR" ? data["navHR"] : data["navEmployee"]
+          }
+        />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={currentUser} />
       </SidebarFooter>
     </Sidebar>
   );
