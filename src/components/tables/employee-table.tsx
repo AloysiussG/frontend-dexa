@@ -58,7 +58,7 @@ import Link from "next/link";
 import ConfirmationModal from "../modals/confirmation-modal";
 import { Employee } from "@/types/types";
 import { format } from "date-fns";
-import { useAuth } from "@/hooks/use-queries";
+import { useAuth, useDeleteEmployee } from "@/hooks/use-queries";
 
 export const schema = z.object({
   id: z.number(),
@@ -98,12 +98,18 @@ export function EmployeeTable({
   const { data: currentUser } = useAuth();
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [selectedItem, setSelectedItem] = React.useState<Employee | null>(null);
+  const { mutateAsync: deleteEmployee, isPending: isPendingDelete } =
+    useDeleteEmployee();
+
   const handleOpenModal = (item: Employee) => {
     setSelectedItem(item);
     onOpen();
   };
   const handleDelete = (id: number | undefined) => {
-    console.log("Delete item with id:", id);
+    // console.log("Delete item with id:", id);
+    if (id) {
+      deleteEmployee(id?.toString());
+    }
     onClose();
   };
 
@@ -398,7 +404,7 @@ export function EmployeeTable({
         onOpenChange={onOpenChange}
         isOpen={isOpen}
         onConfirm={() => handleDelete(selectedItem?.id)}
-        // isLoadingConfirm={isPending}
+        isLoadingConfirm={isPendingDelete}
       />
     </div>
   );

@@ -5,15 +5,10 @@ import EmptyPlaceholder from "@/components/placeholders/empty-placeholder";
 import ErrorPlaceholder from "@/components/placeholders/error-placeholder";
 import LoadingPlaceholder from "@/components/placeholders/loading-placeholder";
 import { EmployeeTable } from "@/components/tables/employee-table";
-import {
-  ErrorType,
-  useDeleteEmployee,
-  useGetAllEmployees,
-} from "@/hooks/use-queries";
+import { ErrorType, useGetAllEmployees } from "@/hooks/use-queries";
 
 export default function Page() {
   const { data: res, isLoading, error } = useGetAllEmployees();
-  const { mutateAsync: deleteEmployee, isPending } = useDeleteEmployee();
 
   return (
     <div className="flex flex-1 flex-col">
