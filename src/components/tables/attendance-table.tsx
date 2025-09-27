@@ -55,7 +55,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@heroui/react";
-import { getHrefByName, getInitials } from "@/lib/utils";
+import { cn, getHrefByName, getInitials } from "@/lib/utils";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -91,8 +91,8 @@ function CustomTableRow({
       data-state={row.getIsSelected() && "selected"}
       className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
     >
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
+      {row.getVisibleCells().map((cell, idx) => (
+        <TableCell key={idx}>
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </TableCell>
       ))}
@@ -119,11 +119,9 @@ export function AttendanceTable({
 
   const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
     {
-      accessorKey: "id",
-      header: () => <div className="w-full text-center">ID</div>,
-      cell: ({ row }) => (
-        <p className="min-w-8 text-center">{row.original.id}</p>
-      ),
+      accessorKey: "no",
+      header: () => <div className="w-full text-center">No.</div>,
+      cell: ({ row }) => <p className="min-w-8 text-center">{row.index + 1}</p>,
     },
     {
       accessorKey: "name",
@@ -175,13 +173,23 @@ export function AttendanceTable({
     {
       accessorKey: "checkInTime",
       header: () => <div className="w-full">Check-In</div>,
-      cell: ({ row }) => (
-        <p className="font-semibold">
-          {row.original?.checkInTime
-            ? format(new Date(row.original.checkInTime), "HH:mm")
-            : "-"}
-        </p>
-      ),
+      cell: ({ row }) => {
+        const isLate = row.original.status === "Late";
+
+        return (
+          <p
+            className={cn(
+              "font-semibold",
+              isLate ? "font-bold text-warning" : ""
+            )}
+          >
+            {row.original?.checkInTime
+              ? // ? format(new Date(row.original.checkInTime), "HH:mm")
+                row.original.checkInTime
+              : "-"}
+          </p>
+        );
+      },
     },
     {
       accessorKey: "checkOutTime",
@@ -189,7 +197,8 @@ export function AttendanceTable({
       cell: ({ row }) => (
         <p className="font-semibold">
           {row.original?.checkOutTime
-            ? format(new Date(row.original.checkOutTime), "HH:mm")
+            ? // ? format(new Date(row.original.checkOutTime), "HH:mm")
+              row.original.checkOutTime
             : "-"}
         </p>
       ),
@@ -215,34 +224,41 @@ export function AttendanceTable({
     {
       id: "actions",
       cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-              size="icon"
-            >
-              <IconDotsVertical />
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link
-                href={`${getHrefByName("Attendance Details")}/${
-                  row.original.id
-                }`}
-              >
-                View Attendance Details
-              </Link>
-            </DropdownMenuItem>
-            {/* <DropdownMenuItem asChild>
+        <>
+          {/* only show attendance details action if he is present/late, or have attendance id */}
+          {!row.original.id ? (
+            <></>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+                  size="icon"
+                >
+                  <IconDotsVertical />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`${getHrefByName("Attendance Details")}/${
+                      row.original.id
+                    }`}
+                  >
+                    View Attendance Details
+                  </Link>
+                </DropdownMenuItem>
+                {/* <DropdownMenuItem asChild>
               <Link href={`/dashboard/attendances/edit/${row.original.id}`}>
                 View {getPossessive(row.original.name)} Full Attendances
               </Link>
             </DropdownMenuItem> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </>
       ),
     },
   ];
@@ -289,11 +305,11 @@ export function AttendanceTable({
       <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+            {table.getHeaderGroups().map((headerGroup, idx) => (
+              <TableRow key={idx}>
+                {headerGroup.headers.map((header, idx) => {
                   return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead key={idx} colSpan={header.colSpan}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -309,8 +325,8 @@ export function AttendanceTable({
           <TableBody className="**:data-[slot=table-cell]:first:w-8">
             {table.getRowModel().rows?.length ? (
               <>
-                {table.getRowModel().rows.map((row) => (
-                  <CustomTableRow key={row.id} row={row} />
+                {table.getRowModel().rows.map((row, idx) => (
+                  <CustomTableRow key={idx} row={row} />
                 ))}
               </>
             ) : (

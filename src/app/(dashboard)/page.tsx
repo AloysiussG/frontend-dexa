@@ -28,7 +28,7 @@ export default function Page() {
           <div className="px-4 md:gap-6 md:px-6">
             <PageTitle
               title="Overview"
-              description="Welcome to the main dashboard."
+              description="Welcome to the main dashboard. You can see all the working hour rules and some overview panels."
             />
           </div>
 
@@ -36,17 +36,17 @@ export default function Page() {
           {(user.role === "Employee" || user.role === "HR") && (
             <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-3 @5xl/main:grid-cols-5">
               <SectionCard
-                cardTitle={"08.00"}
-                cardDescription="Time to Check-In"
+                cardTitle={"08.15"}
+                cardDescription="Max. Check-In"
                 cardAction={<IconCalendar size={28} />}
               />
               <SectionCard
                 cardTitle={"17.00"}
-                cardDescription="Time to Check-Out"
+                cardDescription="Min. Check-Out"
                 cardAction={<IconClock size={28} />}
               />
               <SectionCard
-                cardTitle={"9h 00m"}
+                cardTitle={"8h 45m"}
                 cardDescription="Std. Working Hours"
                 cardAction={<IconCheck size={28} />}
               />

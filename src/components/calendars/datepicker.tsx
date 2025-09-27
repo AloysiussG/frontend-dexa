@@ -13,17 +13,20 @@ import {
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { format } from "date-fns";
 
-export function DatePicker() {
+type Props = {
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
+};
+
+export function DatePicker({ date, setDate }: Props) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  //   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   const shiftDate = (days: number) => {
-    setDate((prev) => {
-      const base = prev ?? new Date(); // if no date selected, start from today
-      const newDate = new Date(base);
-      newDate.setDate(base.getDate() + days);
-      return newDate;
-    });
+    const base = date ?? new Date();
+    const newDate = new Date(base);
+    newDate.setDate(base.getDate() + days);
+    setDate(newDate);
   };
 
   return (

@@ -1,10 +1,23 @@
+"use client";
+
 import { DatePicker } from "@/components/calendars/datepicker";
 import PageTitle from "@/components/headers/page-title";
+import EmptyPlaceholder from "@/components/placeholders/empty-placeholder";
+import ErrorPlaceholder from "@/components/placeholders/error-placeholder";
+import LoadingPlaceholder from "@/components/placeholders/loading-placeholder";
 import { AttendanceTable } from "@/components/tables/attendance-table";
-import attendanceData from "@/data/attendance-data.json";
-import { Attendance } from "@/types/types";
+import { ErrorType, useGetAllAttendances } from "@/hooks/use-queries";
+import { format } from "date-fns";
+import { useState } from "react";
 
 export default function Page() {
+  const [dateValue, setDateValue] = useState<Date | undefined>(new Date());
+  const {
+    data: res,
+    isLoading,
+    error,
+  } = useGetAllAttendances(dateValue ? format(dateValue, "yyyy-MM-dd") : "");
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -14,9 +27,29 @@ export default function Page() {
             description="View your employee attendances here."
           />
           <div className="">
-            <DatePicker />
+            <DatePicker date={dateValue} setDate={setDateValue} />
           </div>
-          <AttendanceTable data={attendanceData as Attendance[]} />
+
+          {isLoading ? (
+            <div className="p-10">
+              <LoadingPlaceholder />
+            </div>
+          ) : error ? (
+            <div className="py-10 px-4">
+              <ErrorPlaceholder
+                message={
+                  (error as ErrorType).response?.data?.message ||
+                  "An error occurred."
+                }
+              />
+            </div>
+          ) : !res?.data?.data || res?.data?.data?.length === 0 ? (
+            <div className="py-10 px-4">
+              <EmptyPlaceholder message={res?.data?.message} />
+            </div>
+          ) : (
+            <AttendanceTable data={res?.data?.data} />
+          )}
         </div>
       </div>
     </div>

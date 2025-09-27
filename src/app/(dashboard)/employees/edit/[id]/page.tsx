@@ -9,11 +9,10 @@ import { ErrorType, useGetOneEmployee } from "@/hooks/use-queries";
 import { use } from "react";
 
 type Props = {
-  params: Promise<{ id: string }>; // params is now a Promise
+  params: Promise<{ id: string }>;
 };
 
 export default function Page({ params }: Props) {
-  // Unwrap params using React.use()
   const { id } = use(params);
 
   const { data: res, isLoading, error } = useGetOneEmployee(id || "-1");

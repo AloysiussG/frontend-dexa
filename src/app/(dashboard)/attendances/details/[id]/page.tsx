@@ -1,16 +1,16 @@
+"use client";
+
 import AttendanceDetail from "@/components/cards/attendance-details-card";
 import PageTitle from "@/components/headers/page-title";
 import attendanceData from "@/data/attendance-data.json";
 import { Attendance } from "@/types/types";
+import { use } from "react";
 
 type Props = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 };
-
 export default function Page({ params }: Props) {
-  const id = params?.id;
+  const { id } = use(params);
 
   const attendance = (attendanceData as Attendance[]).find(
     (att) => att?.id === Number(id)

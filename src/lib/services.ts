@@ -16,6 +16,20 @@ export async function getUserApi() {
   return res; // data: {...} & message
 }
 
+// ATTENDANCES
+
+export async function getAllAttendancesApi(date?: string) {
+  const res = await axios.get(`/api/attendances`, {
+    params: { date },
+  });
+  return res;
+}
+
+export async function getOneAttendanceApi(id: string) {
+  const res = await axios.get(`/api/attendances/${id}`);
+  return res;
+}
+
 // EMPLOYEES
 
 export async function createEmployeeApi(data: unknown) {

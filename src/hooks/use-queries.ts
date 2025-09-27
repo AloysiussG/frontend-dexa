@@ -1,9 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
   createEmployeeApi,
   deleteEmployeeApi,
+  getAllAttendancesApi,
   getAllEmployeesApi,
+  getOneAttendanceApi,
   getOneEmployeeApi,
   getUserApi,
   loginApi,
@@ -33,6 +40,28 @@ export const onError = (error: ErrorType) => {
   });
   console.error(error);
 };
+
+// ATTENDANCES
+
+export function useGetAllAttendances(date?: string) {
+  return useQuery({
+    queryKey: ["attendances", date],
+    queryFn: async () => {
+      return await getAllAttendancesApi(date);
+    },
+    placeholderData: keepPreviousData,
+    retry: 0,
+  });
+}
+
+export function useGetOneAttendance(id: string) {
+  return useQuery({
+    queryKey: ["attendances", id],
+    queryFn: async () => {
+      return await getOneAttendanceApi(id);
+    },
+  });
+}
 
 // EMPLOYEES
 
