@@ -3,7 +3,7 @@ import axios from "./axios";
 
 export async function loginApi(data: { email: string; password: string }) {
   const res = await axios.post(`/api/auth/login`, data);
-  return res.data; // { id, name, token }
+  return res; // data { id, name, token } & message
 }
 
 export async function uploadImage(

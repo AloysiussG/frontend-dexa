@@ -12,24 +12,7 @@ const axios = Axios.create({
   headers: {
     "X-Requested-With": "XMLHttpRequest",
   },
-  // withCredentials: true,
-  //   withXSRFToken: true,
-});
-
-function getTokenFromCookie() {
-  if (typeof document !== "undefined") {
-    const match = document.cookie.match(/(^| )token=([^;]+)/);
-    return match ? match[2] : null;
-  }
-  return null;
-}
-
-axios.interceptors.request.use((config) => {
-  const token = getTokenFromCookie();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true,
 });
 
 export default axios;
