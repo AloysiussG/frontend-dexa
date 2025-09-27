@@ -24,7 +24,9 @@ export type User = {
   avatar?: string;
 };
 
-export const onError = (error: AxiosError<{ message?: string }>) => {
+export type ErrorType = AxiosError<{ message: string }>;
+
+export const onError = (error: ErrorType) => {
   addToast({
     title: error.response?.data?.message || "An error occurred.",
     color: "danger",

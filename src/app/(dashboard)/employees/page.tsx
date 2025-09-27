@@ -1,8 +1,20 @@
+"use client";
+
 import PageTitle from "@/components/headers/page-title";
+import EmptyPlaceholder from "@/components/placeholders/empty-placeholder";
+import ErrorPlaceholder from "@/components/placeholders/error-placeholder";
+import LoadingPlaceholder from "@/components/placeholders/loading-placeholder";
 import { EmployeeTable } from "@/components/tables/employee-table";
-import employeeData from "@/data/employee-data.json";
+import {
+  ErrorType,
+  useDeleteEmployee,
+  useGetAllEmployees,
+} from "@/hooks/use-queries";
 
 export default function Page() {
+  const { data: res, isLoading, error } = useGetAllEmployees();
+  const { mutateAsync: deleteEmployee, isPending } = useDeleteEmployee();
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -11,7 +23,27 @@ export default function Page() {
             title="Employees"
             description="Manage your employees here."
           />
-          <EmployeeTable data={employeeData} />
+
+          {isLoading ? (
+            <div className="p-10">
+              <LoadingPlaceholder />
+            </div>
+          ) : error ? (
+            <div className="py-10 px-4">
+              <ErrorPlaceholder
+                message={
+                  (error as ErrorType).response?.data?.message ||
+                  "An error occurred."
+                }
+              />
+            </div>
+          ) : !res?.data?.data || res?.data?.data?.length === 0 ? (
+            <div className="py-10 px-4">
+              <EmptyPlaceholder message={res?.data?.message} />
+            </div>
+          ) : (
+            <EmployeeTable data={res?.data?.data} />
+          )}
         </div>
       </div>
     </div>

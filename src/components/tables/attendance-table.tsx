@@ -136,7 +136,7 @@ export function AttendanceTable({
             }}
             avatarProps={{
               radius: "lg",
-              src: row.original.name,
+              src: "/avatar.jpg",
               showFallback: true,
               name: getInitials(row.original.name),
             }}
