@@ -1,20 +1,22 @@
+"use client";
+
 import EmployeeForm from "@/components/forms/employee-form";
 import PageTitle from "@/components/headers/page-title";
-import employeeData from "@/data/employee-data.json";
+import EmptyPlaceholder from "@/components/placeholders/empty-placeholder";
+import ErrorPlaceholder from "@/components/placeholders/error-placeholder";
+import LoadingPlaceholder from "@/components/placeholders/loading-placeholder";
+import { ErrorType, useGetOneEmployee } from "@/hooks/use-queries";
+import { use } from "react";
 
 type Props = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>; // params is now a Promise
 };
 
 export default function Page({ params }: Props) {
-  const id = params?.id;
+  // Unwrap params using React.use()
+  const { id } = use(params);
 
-  const employee = employeeData.find(
-    (emp: { id: number; name: string; email: string; role: string }) =>
-      emp?.id === Number(id)
-  );
+  const { data: res, isLoading, error } = useGetOneEmployee(id || "-1");
 
   return (
     <div className="flex flex-1 flex-col">
@@ -24,12 +26,35 @@ export default function Page({ params }: Props) {
             title="Edit Employee"
             description="Add or edit your employees here."
           />
-          <div className="max-w-xl">
-            <EmployeeForm
-              defaultValuesFromData={employee}
-              withPassword={false}
-            />
-          </div>
+
+          {isLoading ? (
+            <div className="p-10">
+              <LoadingPlaceholder />
+            </div>
+          ) : error ? (
+            <div className="py-10 px-4">
+              <ErrorPlaceholder
+                message={
+                  (error as ErrorType).response?.data?.message ||
+                  "An error occurred."
+                }
+              />
+            </div>
+          ) : !res?.data?.data ? (
+            <div className="py-10 px-4">
+              <EmptyPlaceholder
+                title={"Not Found"}
+                message={res?.data?.message}
+              />
+            </div>
+          ) : (
+            <div className="max-w-xl">
+              <EmployeeForm
+                defaultValuesFromData={res?.data?.data}
+                withPassword={false}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

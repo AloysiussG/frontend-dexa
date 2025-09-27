@@ -58,6 +58,7 @@ import Link from "next/link";
 import ConfirmationModal from "../modals/confirmation-modal";
 import { Employee } from "@/types/types";
 import { format } from "date-fns";
+import { useAuth } from "@/hooks/use-queries";
 
 export const schema = z.object({
   id: z.number(),
@@ -94,6 +95,7 @@ export function EmployeeTable({
 }: {
   data: z.infer<typeof schema>[];
 }) {
+  const { data: currentUser } = useAuth();
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [selectedItem, setSelectedItem] = React.useState<Employee | null>(null);
   const handleOpenModal = (item: Employee) => {
@@ -181,34 +183,43 @@ export function EmployeeTable({
     {
       id: "actions",
       cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-              size="icon"
-            >
-              <IconDotsVertical />
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-32">
-            <DropdownMenuItem asChild>
-              <Link
-                href={`${getHrefByName("Edit Employee")}/${row.original.id}`}
-              >
-                Edit
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => handleOpenModal(row.original)}
-              variant="destructive"
-            >
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          {/* hide actions if row == current user */}
+          {row.original.email == currentUser?.email ? (
+            <></>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+                  size="icon"
+                >
+                  <IconDotsVertical />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-32">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`${getHrefByName("Edit Employee")}/${
+                      row.original.id
+                    }`}
+                  >
+                    Edit
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleOpenModal(row.original)}
+                  variant="destructive"
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </>
       ),
     },
   ];
