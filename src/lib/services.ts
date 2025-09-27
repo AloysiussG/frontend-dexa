@@ -11,6 +11,11 @@ export async function logoutApi() {
   return res; // data: true & message
 }
 
+export async function getUserApi() {
+  const res = await axios.get(`/api/users/current`);
+  return res; // data: {...} & message
+}
+
 export async function uploadImage(
   file: File
 ): Promise<{ id: string; url: string }> {

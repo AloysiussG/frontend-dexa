@@ -1,10 +1,36 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { loginApi, logoutApi } from "@/lib/services";
+import { getUserApi, loginApi, logoutApi } from "@/lib/services";
 import { addToast } from "@heroui/react";
 import { getHrefByName } from "@/lib/utils";
 import { AxiosError } from "axios";
 import { LoginFormValues } from "@/components/forms/login-form";
+
+type Role = "HR" | "Employee";
+
+type User = {
+  name: string;
+  email: string;
+  role: Role;
+  avatar?: string;
+};
+
+export function useAuth() {
+  const queryClient = useQueryClient();
+  return useQuery<User>({
+    queryKey: ["user"],
+    queryFn: async () => {
+      try {
+        const res = await getUserApi();
+        return res.data?.data;
+      } catch (error: unknown) {
+        queryClient.setQueryData(["user"], null);
+        console.error(error);
+      }
+    },
+    retry: 0,
+  });
+}
 
 export function useLogout() {
   const router = useRouter();
