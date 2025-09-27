@@ -1,6 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { getUserApi, loginApi, logoutApi } from "@/lib/services";
+import {
+  createEmployeeApi,
+  deleteEmployeeApi,
+  getAllEmployeesApi,
+  getOneEmployeeApi,
+  getUserApi,
+  loginApi,
+  logoutApi,
+  updateEmployeeApi,
+} from "@/lib/services";
 import { addToast } from "@heroui/react";
 import { getHrefByName } from "@/lib/utils";
 import { AxiosError } from "axios";
@@ -14,6 +23,97 @@ export type User = {
   role: Role;
   avatar?: string;
 };
+
+export const onError = (error: AxiosError<{ message?: string }>) => {
+  addToast({
+    title: error.response?.data?.message || "An error occurred.",
+    color: "danger",
+  });
+  console.error(error);
+};
+
+// EMPLOYEES
+
+export function useCreateEmployee() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: unknown) => {
+      return await createEmployeeApi(data);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["employees"],
+      });
+      addToast({
+        title: res.data?.message || "Employee added successfully.",
+      });
+      router.push("/profile/skills");
+    },
+    onError,
+  });
+}
+
+export function useGetAllEmployees() {
+  return useQuery({
+    queryKey: ["employees"],
+    queryFn: async () => {
+      return await getAllEmployeesApi();
+    },
+    retry: 0,
+  });
+}
+
+export function useGetOneEmployee(id: string) {
+  return useQuery({
+    queryKey: ["employees", id],
+    queryFn: async () => {
+      return await getOneEmployeeApi(id);
+    },
+  });
+}
+
+export function useUpdateEmployee() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string, data: unknown) => {
+      return await updateEmployeeApi(id, data);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["employees"],
+      });
+      addToast({
+        title: res.data?.message || "Employee updated successfully.",
+      });
+      router.push("/profile/skills");
+    },
+    onError,
+  });
+}
+
+export function useDeleteEmployee() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return await deleteEmployeeApi(id);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["employees"],
+      });
+      addToast({
+        title: res.data?.message || "Employee deleted successfully.",
+      });
+    },
+    onError,
+  });
+}
+
+// AUTH & CURRENT USER
 
 export function useAuth() {
   const queryClient = useQueryClient();
@@ -47,13 +147,7 @@ export function useLogout() {
       });
       router.push(getHrefByName("Login"));
     },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      addToast({
-        title: error.response?.data?.message || "An error occurred.",
-        color: "danger",
-      });
-      console.error(error);
-    },
+    onError,
   });
 }
 
@@ -74,12 +168,6 @@ export function useLogin() {
       });
       router.push(getHrefByName("Dashboard"));
     },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      addToast({
-        title: error.response?.data?.message || "An error occurred.",
-        color: "danger",
-      });
-      console.error(error);
-    },
+    onError,
   });
 }

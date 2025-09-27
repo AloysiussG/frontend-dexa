@@ -16,6 +16,33 @@ export async function getUserApi() {
   return res; // data: {...} & message
 }
 
+// EMPLOYEES
+
+export async function createEmployeeApi(data: unknown) {
+  const res = await axios.post(`/api/employees`, data);
+  return res;
+}
+
+export async function getAllEmployeesApi() {
+  const res = await axios.get(`/api/employees`);
+  return res;
+}
+
+export async function getOneEmployeeApi(id: string) {
+  const res = await axios.get(`/api/employees/${id}`);
+  return res;
+}
+
+export async function updateEmployeeApi(id: string, data: unknown) {
+  const res = await axios.patch(`/api/employees/${id}`, data);
+  return res;
+}
+
+export async function deleteEmployeeApi(id: string) {
+  const res = await axios.delete(`/api/employees/${id}`);
+  return res;
+}
+
 export async function uploadImage(
   file: File
 ): Promise<{ id: string; url: string }> {
