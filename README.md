@@ -234,7 +234,7 @@ You will see the login page and continue to use the app with some of these provi
 
 ## Dummy Data for Testing (Login)
 
-For quick testing of the application, you can use the following **dummy users**. These users are pre-seeded in the back-end database from the file **after you run the seeder from the Usage/Project Setup section**:
+For quick testing of the application, you can use the following **dummy users**. These users are pre-seeded in the back-end database from the file **after you run the seeder from the Usage/Project Setup section**. The full users data are shown inside **src/seeder/data** folder, with the name of **users.json**.
 
 You can log in using the **email** and **password** provided below. All passwords are set to `password` for testing purposes.
 
