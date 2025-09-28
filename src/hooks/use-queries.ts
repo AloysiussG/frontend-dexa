@@ -228,7 +228,7 @@ export function useAuth() {
         if (isAxiosError(error) && error.response?.status === 401) {
           console.info("User not logged in");
         } else {
-          console.error(error);
+          //   console.error(error);
         }
         return null;
       }
