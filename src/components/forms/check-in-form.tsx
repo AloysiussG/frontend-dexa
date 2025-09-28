@@ -99,7 +99,7 @@ export default function CheckInForm({
         <div className="mt-2">
           <PrimaryButton
             isLoading={form.formState.isSubmitting}
-            className="w-fit"
+            className="w-fit min-w-32"
             type="submit"
           >
             Check-In
