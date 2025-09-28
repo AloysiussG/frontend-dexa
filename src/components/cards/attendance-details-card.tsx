@@ -28,6 +28,7 @@ export type AttendanceDetails = {
   workingHours?: string;
   photoUrl?: string | null;
   avatarUrl?: string;
+  email?: string;
 };
 
 export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
@@ -41,6 +42,7 @@ export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
     workingHours,
     photoUrl,
     avatarUrl,
+    email,
   } = data;
 
   return (
@@ -54,12 +56,26 @@ export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
                 <Avatar
                   showFallback={true}
                   name={getInitials(name || "")}
-                  className="w-20 h-20 text-large"
+                  className="w-32 h-32 text-large"
                   src={avatarUrl || "/avatar.jpg"}
                 />
                 <div className="">
                   <CardTitle>{name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{role}</p>
+                  <p className="text-sm text-muted-foreground">{email}</p>
+                  <div className="mt-4 w-32">
+                    {role == "HR" ? (
+                      <Badge variant="default" className="px-1.5">
+                        {role}
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="outline"
+                        className="text-muted-foreground px-1.5"
+                      >
+                        {role}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

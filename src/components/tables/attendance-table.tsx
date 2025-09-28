@@ -65,6 +65,7 @@ export const attendanceSchema = z.object({
   name: z.string().trim().min(1, {
     message: "Attendance name is required.",
   }),
+  email: z.string().optional(),
   role: z.string().trim().min(1, { message: "Role is required." }),
   date: z.string().trim().min(1, { message: "Attendance date is required." }),
   checkInTime: z
@@ -75,6 +76,7 @@ export const attendanceSchema = z.object({
     .string()
     .trim()
     .min(1, { message: "Attendance check-out time is required." }),
+  workingHours: z.string().optional(),
   status: z
     .string()
     .trim()
@@ -139,6 +141,7 @@ export function AttendanceTable({
               name: getInitials(row.original.name),
             }}
             name={row.original.name}
+            description={row.original.email}
           >
             {row.original.name}
           </User>
@@ -200,6 +203,15 @@ export function AttendanceTable({
             ? // ? format(new Date(row.original.checkOutTime), "HH:mm")
               row.original.checkOutTime
             : "-"}
+        </p>
+      ),
+    },
+    {
+      accessorKey: "workingHours",
+      header: () => <div className="w-full">Hours</div>,
+      cell: ({ row }) => (
+        <p className="font-semibold">
+          {row.original?.workingHours ? row.original.workingHours : "-"}
         </p>
       ),
     },
