@@ -109,7 +109,12 @@ export function LoginForm({
                   )}
                 />
                 <div className="mt-auto">
-                  <PrimaryButton type="submit">Login</PrimaryButton>
+                  <PrimaryButton
+                    isLoading={form.formState.isSubmitting}
+                    type="submit"
+                  >
+                    Login
+                  </PrimaryButton>
                 </div>
               </div>
             </form>
