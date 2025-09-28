@@ -61,7 +61,7 @@ export default function DailyPresenceCard({
                   <IconLoader className="h-4 md:h-6" />
                 </span>
               )}
-              {data?.status}
+              {data?.status} {data?.lateDuration ? data?.lateDuration : ""}
             </Badge>
           }
         />

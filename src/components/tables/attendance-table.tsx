@@ -57,7 +57,7 @@ import {
 import { Input } from "@heroui/react";
 import { cn, getHrefByName, getInitials } from "@/lib/utils";
 import Link from "next/link";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 
 export const attendanceSchema = z.object({
   id: z.number(),
@@ -77,6 +77,7 @@ export const attendanceSchema = z.object({
     .trim()
     .min(1, { message: "Attendance check-out time is required." }),
   workingHours: z.string().optional(),
+  lateDuration: z.string().optional(),
   status: z
     .string()
     .trim()
@@ -166,13 +167,13 @@ export function AttendanceTable({
         </div>
       ),
     },
-    {
-      accessorKey: "date",
-      header: () => <div className="w-full">Date</div>,
-      cell: ({ row }) => (
-        <p>{format(new Date(row.original.date), "dd MMMM yyyy")}</p>
-      ),
-    },
+    // {
+    //   accessorKey: "date",
+    //   header: () => <div className="w-full">Date</div>,
+    //   cell: ({ row }) => (
+    //     <p>{format(new Date(row.original.date), "dd MMMM yyyy")}</p>
+    //   ),
+    // },
     {
       accessorKey: "checkInTime",
       header: () => <div className="w-full">Check-In</div>,
@@ -229,7 +230,8 @@ export function AttendanceTable({
           ) : (
             <IconLoader />
           )}
-          {row.original.status}
+          {row.original.status}{" "}
+          {row.original.lateDuration ? row.original.lateDuration : ""}
         </Badge>
       ),
     },

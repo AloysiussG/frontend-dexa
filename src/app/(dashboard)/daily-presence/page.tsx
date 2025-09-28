@@ -20,6 +20,7 @@ export type CurrentAttendanceDetailDtoResponse = {
   status?: "Present" | "Late" | "Absent";
   workingHours?: string; // calculated from checkInTime and checkOutTime
   photoUrl?: string | null;
+  lateDuration?: string;
 };
 
 export default function Page() {

@@ -29,6 +29,7 @@ export type AttendanceDetails = {
   photoUrl?: string | null;
   avatarUrl?: string;
   email?: string;
+  lateDuration?: string;
 };
 
 export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
@@ -43,6 +44,7 @@ export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
     photoUrl,
     avatarUrl,
     email,
+    lateDuration,
   } = data;
 
   return (
@@ -116,7 +118,7 @@ export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
                   <IconLoader className="h-4 md:h-6" />
                 </span>
               )}
-              {status}
+              {status} {lateDuration ? lateDuration : ""}
             </Badge>
           </div>
         </div>
