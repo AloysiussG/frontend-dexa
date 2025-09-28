@@ -2,15 +2,29 @@
 
 ## Overview
 
-This project was built by **Aloysius Gonzaga Seto Galih D.** for the **Dexa Group Full-Stack Developer Skill Test**, designed for **user attendance management**.
+This project was built by **Aloysius Gonzaga Seto Galih D.** as part of the **Dexa Group Full-Stack Developer Skill Test**, designed to provide a **comprehensive attendance management system** for employees and HR staff. The application allows seamless **remote work tracking**, including **Work From Home (WFH)** scenarios, where employees can log their presence, upload proof of attendance, and track their daily work hours.
 
 ![Login Screenshot](./docs/screenshots/login.png)
 
+## Key & Feature Highlights
+
+- **Multi-role system**: Separate dashboards and functionalities for HR and Employee roles.
+- **Attendance tracking**: Employees can check-in and check-out, with the system automatically tracking daily attendance status.
+- **Photo proof**: Users can upload an image during check-in for validation purposes.
+- **HR management dashboard**: HR can create, update, and monitor employee records and attendance data efficiently.
+- **Clean and responsive UI design**: A modern, intuitive, beautiful, clean, and mobile-friendly interface built with Next.js and ShadCN UI.
+- **Time-zone aware system**: All timestamps are stored in UTC, displayed in GMT+7 for consistency.
+- **Secure authentication**: Access control is implemented via role-based guards and HTTP-only cookies to protect sensitive information.
+
+This project demonstrates **full-stack development skills** by integrating **Next.js** for front-end, **Nest.js** for back-end, **Prisma** for database management, and **MySQL** as the persistent storage solution. The system is built for **scalability**, **maintainability**, and **real-world HR use cases**.
+
 ![Login Screenshot](./docs/screenshots/dash-main.png)
 
-### Web Application Use Cases
+## Use Cases
 
-1. **Work From Home (WFH) Employee Attendance**
+This web application is designed to address common HR and employee needs in a modern workplace. It focuses on **simplifying attendance tracking, monitoring employee activity, and providing actionable insights** for management. The system is particularly useful for organizations that support **remote work** or need a **digital attendance solution**.
+
+1. ### **Work From Home (WFH) Employee Attendance**
 
    ![Dashboard Screenshot](./docs/screenshots/dash-dailypresence-clip.png)
 
@@ -18,7 +32,7 @@ This project was built by **Aloysius Gonzaga Seto Galih D.** for the **Dexa Grou
    - Record daily attendance, capturing **date & time**.
    - Upload a **photo** as proof of working from home.
 
-2. **Employee Monitoring**
+2. ### **Employee Monitoring**
 
    ![Dashboard Screenshot](./docs/screenshots/dash-attendances-clip.png)
 
@@ -29,8 +43,7 @@ This project was built by **Aloysius Gonzaga Seto Galih D.** for the **Dexa Grou
 
 ## Table of Contents
 
-- [Main Tech Stacks](#main-tech-stacks)
-- [Feature Highlights](#feature-highlights)
+- [Tech Stacks](#tech-stacks)
 - [Front-end Tech & Features](#front-end-tech--features)
 - [Back-end Tech & Features](#back-end-tech--features)
 - [API Endpoints](#api-endpoints)
@@ -39,32 +52,19 @@ This project was built by **Aloysius Gonzaga Seto Galih D.** for the **Dexa Grou
 
 ---
 
-## Main Tech Stacks
+## Tech Stacks
 
-### Front-end
+- ### Front-end
 
-**Next.js (TypeScript)** – The React Framework for the Web  
-Used by some of the world's largest companies, Next.js enables you to create **high-quality web applications** with the power of React components, server-side rendering, and static generation.
+  - **Next.js (TypeScript)** – The React Framework for the Web. Used by some of the world's largest companies, Next.js enables you to create **high-quality web applications** with the power of React components, server-side rendering, and static generation.
 
-### Back-end
+- ### Back-end
 
-**Nest.js (TypeScript)** – A progressive Node.js framework  
-Nest.js provides **scalable, maintainable, and testable architecture** for building back-end applications with TypeScript.
+  - **Nest.js (TypeScript)** – A progressive Node.js framework. Nest.js provides **scalable, maintainable, and testable architecture** for building back-end applications with TypeScript.
 
-### Database
+- ### Database
 
-**MySQL** – Relational database for storing employee and attendance data.
-
----
-
-## Feature Highlights
-
-- **Multi-role user authentication:** HR, Employee
-- **Daily presence:** check-in & check-out
-- **Image upload:** drag-and-drop file upload with validation
-- **Employee management:** create, read, update, and delete (CRUD) for HR
-- **Attendance management:** view attendances with timezone-aware status (Present, Late, Absent)
-- **Clean and responsive UI/UX:** built with fancy and fully-responsive UI with seamless front-end validation and state management
+  - **MySQL** – Relational database for storing employee and attendance data.
 
 ---
 
@@ -76,6 +76,7 @@ Nest.js provides **scalable, maintainable, and testable architecture** for build
 - **React Hook Form + Zod** – Form validation
 - **Axios** – API client
 - **date-fns + date-fns-tz** – Date & timezone handling
+- **React Dropzone** – Drag & drop image upload
 
 ---
 
@@ -94,25 +95,43 @@ Nest.js provides **scalable, maintainable, and testable architecture** for build
 
 ### Auth
 
-| Method | Endpoint             | Description           |
-| ------ | -------------------- | --------------------- |
-| POST   | `/api/auth/login`    | User login            |
-| DELETE | `/api/auth/logout`   | User logout           |
-| GET    | `/api/users/current` | Get current user info |
+| Method | Endpoint             | Description                         | Roles           |
+| ------ | -------------------- | ----------------------------------- | --------------- |
+| POST   | `/api/auth/login`    | User login                          | (Guest)         |
+| DELETE | `/api/auth/logout`   | User logout                         | (Authenticated) |
+| GET    | `/api/users/current` | Get current authenticated user info | (Authenticated) |
 
 ### Attendance
 
-| Method | Endpoint                     | Description                 |
-| ------ | ---------------------------- | --------------------------- |
-| POST   | `/api/attendances/check-in`  | User check-in               |
-| PATCH  | `/api/attendances/check-out` | User check-out              |
-| GET    | `/api/attendances/today`     | Get current user attendance |
+| Method | Endpoint                         | Description                             | Roles        |
+| ------ | -------------------------------- | --------------------------------------- | ------------ |
+| GET    | `/api/attendances/current`       | Get current attendance for current user | Employee, HR |
+| POST   | `/api/attendances/check-in`      | Check in for current user               | Employee, HR |
+| PATCH  | `/api/attendances/check-out/:id` | Check out for current user              | Employee, HR |
+| GET    | `/api/attendances`               | List attendances for a specific date    | HR           |
+| GET    | `/api/attendances/:id`           | Get single attendance detail by ID      | HR           |
+
+### Employee
+
+| Method | Endpoint             | Description               | Roles |
+| ------ | -------------------- | ------------------------- | ----- |
+| POST   | `/api/employees`     | Create a new employee     | HR    |
+| GET    | `/api/employees`     | Get all employees         | HR    |
+| GET    | `/api/employees/:id` | Get single employee by ID | HR    |
+| PATCH  | `/api/employees/:id` | Update employee by ID     | HR    |
+| DELETE | `/api/employees/:id` | Delete employee by ID     | HR    |
 
 ### Upload
 
-| Method | Endpoint            | Description           |
-| ------ | ------------------- | --------------------- |
-| POST   | `/api/upload/image` | Upload check-in image |
+| Method | Endpoint            | Description           | Roles        |
+| ------ | ------------------- | --------------------- | ------------ |
+| POST   | `/api/upload/image` | Upload check-in image | Employee, HR |
+
+### Main Dashboard Content
+
+| Method | Endpoint                 | Description                                 | Roles        |
+| ------ | ------------------------ | ------------------------------------------- | ------------ |
+| GET    | `/api/dashboard/current` | Get main dashboard content for current user | Employee, HR |
 
 ---
 
