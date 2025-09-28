@@ -48,6 +48,8 @@ This web application is designed to address common HR and employee needs in a mo
 - [Front-end Tech & Features](#front-end-tech--features)
 - [Back-end Tech & Features](#back-end-tech--features)
 - [API Endpoints](#api-endpoints)
+- [Usage/Project Setup](#usage--project-setup)
+- [Dummy Data for Testing (Login)](#dummy-data-for-testing-login)
 - [Usage](#usage)
 - [Notes](#notes)
 
@@ -136,7 +138,7 @@ This web application is designed to address common HR and employee needs in a mo
 
 ---
 
-## Usage
+## Usage / Project Setup
 
 ### Back-end
 
@@ -153,17 +155,25 @@ Install dependencies:
 npm install
 ```
 
-**(Optional)** Setup environment variables. For temporary quick test, the URL endpoints are already stored in the files. The default port of the back-end are set to 8000. Please see the **project directories**.
-
-```env
-NEXT_FRONTEND_APP_URL: 'http://localhost:3000',
-NEST_BACKEND_APP_URL: 'http://localhost:8000',
-```
-
 Create MySQL database:
 
 ```bash
 CREATE DATABASE dexagroup_seto;
+```
+
+Setup **.env** or environment variables for database URL (MySQL):
+
+```env
+DATABASE_URL="mysql://root:@localhost:3306/dexagroup_seto"
+```
+
+**(Optional)** Add environment variables for URL. For temporary quick test, the URL endpoints are already stored in the files. The default port of the back-end are set to 8000. Please see the **project directories**.
+
+```env
+DATABASE_URL="mysql://root:@localhost:3306/dexagroup_seto"
+
+NEXT_PUBLIC_FRONTEND_APP_URL=http://localhost:3000
+NEXT_PUBLIC_BACKEND_APP_URL=http://localhost:8000
 ```
 
 Run the migration:
@@ -202,8 +212,8 @@ npm install
 **(Optional)** Setup environment variables. For temporary quick test, the URL endpoints are already stored in the files. The default port of the front-end are set to 3000. Please see the **project directories**.
 
 ```env
-NEXT_FRONTEND_APP_URL: 'http://localhost:3000',
-NEST_BACKEND_APP_URL: 'http://localhost:8000',
+NEXT_PUBLIC_FRONTEND_APP_URL=http://localhost:3000
+NEXT_PUBLIC_BACKEND_APP_URL=http://localhost:8000
 ```
 
 Run the project:
@@ -217,6 +227,38 @@ Open the browser:
 ```arduino
 http://localhost:3000
 ```
+
+You will see the login page and continue to use the app with some of these provided credentials for testing. The data are shown in the next section below.
+
+---
+
+## Dummy Data for Testing (Login)
+
+For quick testing of the application, you can use the following **dummy users**. These users are pre-seeded in the back-end database from the file **after you run the seeder from the Usage/Project Setup section**:
+
+You can log in using the **email** and **password** provided below. All passwords are set to `password` for testing purposes.
+
+| Name          | Email                     | Password | Role     |
+| ------------- | ------------------------- | -------- | -------- |
+| Alice HR      | alice.hr@company.com      | password | HR       |
+| David HR      | david.hr@company.com      | password | HR       |
+| Bob Worker    | bob.worker@company.com    | password | Employee |
+| Charlie Staff | charlie.staff@company.com | password | Employee |
+
+### How to Use the App
+
+1. Start the back-end and front-end servers as described in the **Usage/Project Setup** section.
+2. Open the login page:
+
+   ```arduino
+   http://localhost:3000
+   ```
+
+3. Enter the email and password of any dummy user from the table above.
+4. You will be redirected to the appropriate dashboard based on the role:
+5. HR users will access employee and attendance management features, as well as daily presence dashboard.
+6. Employee users will access the daily attendance dashboard.
+7. You can use these accounts to test check-in, check-out, attendance viewing, and employee management features.
 
 ---
 
