@@ -242,7 +242,7 @@ export function useLogout() {
       return await logoutApi();
     },
     onSuccess: (res) => {
-      queryClient.removeQueries({ queryKey: ["user"] });
+      queryClient.setQueryData(["user"], null);
       addToast({
         title: res.data?.message || "Logout successful.",
       });
