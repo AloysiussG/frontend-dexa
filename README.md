@@ -1,4 +1,4 @@
-# Dexa Group - Web Application Project
+# Dexa Group - Web Application Project (Front-end Next.js)
 
 ## Overview
 
