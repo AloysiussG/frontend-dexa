@@ -17,6 +17,8 @@ import PrimaryButton from "../buttons/primary-button";
 import { format } from "date-fns";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import { useCreateEmployee, useUpdateEmployee } from "@/hooks/use-queries";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState } from "react";
 
 const roles = [
   { label: "HR", value: "HR" },
@@ -36,6 +38,9 @@ export default function EmployeeForm({
   defaultValuesFromData?: Partial<FormValuesExtendedProps>;
   withPassword?: boolean;
 }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
   const { mutateAsync: add } = useCreateEmployee();
   const { mutateAsync: edit } = useUpdateEmployee();
 
@@ -124,6 +129,21 @@ export default function EmployeeForm({
                     id="password"
                     placeholder="Enter the employee's password"
                     {...field}
+                    endContent={
+                      <button
+                        aria-label="toggle password visibility"
+                        className="focus:outline-solid outline-transparent"
+                        type="button"
+                        onClick={toggleVisibility}
+                      >
+                        {isVisible ? (
+                          <EyeIcon className="text-sm w-5 text-default-400 pointer-events-none" />
+                        ) : (
+                          <EyeOffIcon className="text-sm w-5 text-default-400 pointer-events-none" />
+                        )}
+                      </button>
+                    }
+                    type={isVisible ? "text" : "password"}
                     errorMessage={
                       "password" in form.formState.errors
                         ? form.formState.errors.password?.message

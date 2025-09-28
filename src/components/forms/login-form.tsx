@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
@@ -14,6 +16,8 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useLogin } from "@/hooks/use-queries";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState } from "react";
 
 export const loginFormSchema = z.object({
   email: z
@@ -30,6 +34,9 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const { mutateAsync: login } = useLogin();
+
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -93,6 +100,20 @@ export function LoginForm({
                           variant="bordered"
                           id="password"
                           {...field}
+                          endContent={
+                            <button
+                              aria-label="toggle password visibility"
+                              className="focus:outline-solid outline-transparent"
+                              type="button"
+                              onClick={toggleVisibility}
+                            >
+                              {isVisible ? (
+                                <EyeIcon className="text-sm w-5 text-default-400 pointer-events-none" />
+                              ) : (
+                                <EyeOffIcon className="text-sm w-5 text-default-400 pointer-events-none" />
+                              )}
+                            </button>
+                          }
                           errorMessage={
                             "password" in form.formState.errors
                               ? form.formState.errors.password?.message
@@ -102,7 +123,7 @@ export function LoginForm({
                             "password" in form.formState.errors &&
                             !!form.formState.errors.password
                           }
-                          type="password"
+                          type={isVisible ? "text" : "password"}
                         />
                       </FormControl>
                     </FormItem>
