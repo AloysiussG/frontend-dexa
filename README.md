@@ -6,6 +6,8 @@ This project was built by **Aloysius Gonzaga Seto Galih D.** as part of the **De
 
 ![Login Screenshot](./docs/screenshots/login.png)
 
+![Login Screenshot](./docs/screenshots/dash-main.png)
+
 ## Key & Feature Highlights
 
 - **Multi-role system**: Separate dashboards and functionalities for HR and Employee roles.
@@ -15,10 +17,6 @@ This project was built by **Aloysius Gonzaga Seto Galih D.** as part of the **De
 - **Clean and responsive UI design**: A modern, intuitive, beautiful, clean, and mobile-friendly interface built with Next.js and ShadCN UI.
 - **Time-zone aware system**: All timestamps are stored in UTC, displayed in GMT+7 for consistency.
 - **Secure authentication**: Access control is implemented via role-based guards and HTTP-only cookies to protect sensitive information.
-
-This project demonstrates **full-stack development skills** by integrating **Next.js** for front-end, **Nest.js** for back-end, **Prisma** for database management, and **MySQL** as the persistent storage solution. The system is built for **scalability**, **maintainability**, and **real-world HR use cases**.
-
-![Login Screenshot](./docs/screenshots/dash-main.png)
 
 ## Use Cases
 
