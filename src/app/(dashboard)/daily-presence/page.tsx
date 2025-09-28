@@ -54,7 +54,7 @@ export default function Page() {
             <CardContent>
               <p className="text-2xl font-bold">
                 {currentTime &&
-                  format(new Date(currentTime), "dd MMMM yyyy, h:mm:ss a")}
+                  format(new Date(currentTime), "dd MMMM yyyy, HH:mm:ss a")}
               </p>
             </CardContent>
           </Card>

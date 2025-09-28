@@ -1,5 +1,5 @@
 import { uploadImage } from "@/lib/services";
-import { addToast } from "@heroui/react";
+import { addToast, Button } from "@heroui/react";
 import { CloudUpload, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback } from "react";
@@ -88,13 +88,13 @@ const ImageDropzone = ({
             alt="..."
           />
           <div className="absolute -top-2 -right-2">
-            <button
+            <Button
               type="button"
-              onClick={onRemoveFileCallback}
-              className="bg-colorprimary h-8 w-8 mx-auto justify-center flex items-center rounded-full text-white"
+              onPress={onRemoveFileCallback}
+              className="min-w-0 min-h-0 bg-dexa-primary mx-auto justify-center flex items-center text-white"
             >
               <X size={18} />
-            </button>
+            </Button>
           </div>
         </div>
       ) : (
