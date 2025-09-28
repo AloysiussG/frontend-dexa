@@ -85,8 +85,9 @@ export async function uploadImage(
       // set timeout delay untuk loading
       await new Promise((delayResolve) => setTimeout(delayResolve, 1000));
 
-      if (res.status === 200) {
-        const { url, id } = res.data;
+      if (res.status === 200 || res.status === 201) {
+        const { data, message } = res?.data;
+        const { url, id } = data;
 
         // preload image before resolving
         await new Promise<void>((resolve, reject) => {
@@ -98,7 +99,7 @@ export async function uploadImage(
 
         // toast when success
         addToast({
-          title: "Image uploaded successfully.",
+          title: message || "Image uploaded successfully.",
           color: "success",
         });
 
