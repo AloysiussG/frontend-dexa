@@ -11,20 +11,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { addToast } from "@heroui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "@/lib/axios";
-import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import PrimaryButton from "../buttons/primary-button";
 import ImageDropzone from "../dropzones/image-dropzone";
+import { useCheckIn } from "@/hooks/use-queries";
 
-const formSchema = z.object({
-  checkInImage: z.object({
-    url: z.string().min(1, { message: "Check-In Image is required" }),
-    id: z.string().optional(),
-  }),
-});
+const formSchema = z
+  .object({
+    checkInImage: z.object({
+      url: z.string().trim().min(1, { message: "Check-In Image is required" }),
+      id: z.string().optional(),
+    }),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.checkInImage.url) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["checkInImage"],
+        message: "Check-In Image is required",
+      });
+    }
+  });
 type FormValues = z.infer<typeof formSchema>;
 
 export default function CheckInForm({
@@ -32,29 +38,7 @@ export default function CheckInForm({
 }: {
   defaultValuesFromData?: Partial<FormValues>;
 }) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const { mutateAsync: add } = useMutation({
-    mutationFn: async (data: FormValues) => {
-      return await axios.post(`/api/daily-presence/check-in`, data);
-    },
-    onSuccess: (res) => {
-      queryClient.invalidateQueries({
-        queryKey: ["daily-presence"],
-      });
-      addToast({
-        title: res.data?.message,
-      });
-      router.push("/dashboard/daily-presence");
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      addToast({
-        title: error.response?.data?.message || "An error occurred.",
-        color: "danger",
-      });
-      console.error(error);
-    },
-  });
+  const { mutateAsync: add } = useCheckIn();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -67,7 +51,9 @@ export default function CheckInForm({
   });
 
   const onSubmit = async (data: FormValues) => {
-    await add(data);
+    await add({
+      photoUrl: data?.checkInImage.url,
+    });
   };
 
   const onSubmitError = (error: unknown) => {

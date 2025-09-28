@@ -14,6 +14,7 @@ import {
   IconLoader,
 } from "@tabler/icons-react";
 import Image from "next/image";
+import { BadgeCheckIcon } from "lucide-react";
 
 export default function DailyPresenceCard({
   data,
@@ -61,25 +62,29 @@ export default function DailyPresenceCard({
         <InfoCard
           icon={<IconClockPlay size={20} />}
           label="Check In"
+          value={data?.checkInTime ? data?.checkInTime : undefined}
           content={
             <div className="w-fit">
               {!data?.checkInTime ? (
-                <>
+                <div className="flex flex-col gap-4">
                   <p className="text-muted-foreground">
                     You haven’t checked in yet for today.
                   </p>
                   <Button
+                    className="bg-neutral-800 text-white hover:bg-neutral-700"
                     variant="flat"
                     as={Link}
                     href={getHrefByName("Check-In")}
                   >
                     Check-In
                   </Button>
-                </>
+                </div>
               ) : (
                 <div className="flex items-center gap-3 justify-start">
-                  <Badge variant="default">Checked In</Badge>
-                  <p className="font-medium">at {data?.checkInTime}</p>
+                  <Badge variant="secondary">
+                    <BadgeCheckIcon />
+                    Checked In
+                  </Badge>
                 </div>
               )}
             </div>
@@ -90,25 +95,32 @@ export default function DailyPresenceCard({
         <InfoCard
           icon={<IconClockPlay size={20} />}
           label="Check Out"
+          value={data?.checkOutTime ? data?.checkOutTime : undefined}
           content={
             <div className="w-fit">
-              {!data?.checkOutTime ? (
+              {!data?.checkInTime ? (
                 <p className="text-muted-foreground">
-                  Please check-in before checking out.
+                  Please check-in first before checking out.
                 </p>
               ) : !data?.checkOutTime ? (
-                <>
+                <div className="flex flex-col gap-4">
                   <p className="text-muted-foreground">
                     You haven’t checked out yet today.
                   </p>
-                  <Button variant="flat" onPress={handleCheckOut}>
+                  <Button
+                    className="bg-neutral-800 text-white hover:bg-neutral-700"
+                    variant="flat"
+                    onPress={handleCheckOut}
+                  >
                     Check-Out
                   </Button>
-                </>
+                </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <Badge variant="secondary">Checked Out</Badge>
-                  <p className="font-medium">at {data?.checkOutTime}</p>
+                  <Badge variant="secondary">
+                    <BadgeCheckIcon />
+                    Checked Out
+                  </Badge>
                 </div>
               )}
             </div>

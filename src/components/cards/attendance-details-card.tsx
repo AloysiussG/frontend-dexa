@@ -173,7 +173,9 @@ export function InfoCard({
         <p className="mt-1 text-lg md:text-2xl font-semibold">{value}</p>
       )}
       {content && (
-        <CardContent className="flex flex-col gap-3 p-0">{content}</CardContent>
+        <CardContent className="mt-auto flex flex-col gap-3 p-0">
+          {content}
+        </CardContent>
       )}
     </Card>
   );

@@ -6,6 +6,8 @@ import {
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
+  checkIn,
+  checkOut,
   createEmployeeApi,
   deleteEmployeeApi,
   getAllAttendancesApi,
@@ -51,6 +53,52 @@ export function useGetMainDashboard() {
     queryFn: async () => {
       return await getMainDashApi();
     },
+  });
+}
+
+// DAILY PRESENCE
+
+export type CreateAttendanceDtoRequest = {
+  photoUrl: string;
+};
+
+export function useCheckIn() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateAttendanceDtoRequest) => {
+      return await checkIn(data);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["attendances", "current"],
+      });
+      addToast({
+        title: res.data?.message || "Check-in successful.",
+      });
+      router.push(getHrefByName("Daily Presence"));
+    },
+    onError,
+  });
+}
+
+export function useCheckOut() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return await checkOut(id);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["attendances", "current"],
+      });
+      addToast({
+        title: res.data?.message || "Check-out successful.",
+      });
+    },
+    onError,
   });
 }
 

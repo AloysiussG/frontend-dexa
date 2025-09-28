@@ -23,6 +23,18 @@ export async function getMainDashApi() {
   return res;
 }
 
+// DAILY PRESENCE
+
+export async function checkIn(data: unknown) {
+  const res = await axios.post(`/api/attendances/check-in`, data);
+  return res;
+}
+
+export async function checkOut(id: string) {
+  const res = await axios.patch(`/api/attendances/check-out${id}`);
+  return res;
+}
+
 // ATTENDANCES
 
 export async function getCurrentAttendanceApi() {
