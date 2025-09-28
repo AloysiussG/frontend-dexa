@@ -18,6 +18,11 @@ export async function getUserApi() {
 
 // ATTENDANCES
 
+export async function getCurrentAttendanceApi() {
+  const res = await axios.get(`/api/attendances/current`);
+  return res;
+}
+
 export async function getAllAttendancesApi(date?: string) {
   const res = await axios.get(`/api/attendances`, {
     params: { date },

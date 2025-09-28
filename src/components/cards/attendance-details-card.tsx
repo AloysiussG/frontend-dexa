@@ -152,14 +152,16 @@ export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
 }
 
 // Small reusable info card
-function InfoCard({
+export function InfoCard({
   icon,
   label,
   value,
+  content,
 }: {
   icon: React.ReactNode;
   label: string;
-  value: string;
+  value?: string;
+  content?: React.ReactNode;
 }) {
   return (
     <Card className="flex flex-col items-start p-4">
@@ -167,7 +169,12 @@ function InfoCard({
         {icon}
         <span className="text-xs font-medium">{label}</span>
       </div>
-      <p className="mt-1 text-lg md:text-2xl font-semibold">{value}</p>
+      {value && (
+        <p className="mt-1 text-lg md:text-2xl font-semibold">{value}</p>
+      )}
+      {content && (
+        <CardContent className="flex flex-col gap-3 p-0">{content}</CardContent>
+      )}
     </Card>
   );
 }

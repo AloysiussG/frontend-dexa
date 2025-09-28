@@ -3,20 +3,31 @@
 import PageTitle from "@/components/headers/page-title";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { differenceInMinutes, format } from "date-fns";
-import { Button } from "@heroui/react";
-import Link from "next/link";
-import { getHrefByName } from "@/lib/utils";
+import { format } from "date-fns";
+import { ErrorType, useGetCurrentAttendance } from "@/hooks/use-queries";
+import LoadingPlaceholder from "@/components/placeholders/loading-placeholder";
+import ErrorPlaceholder from "@/components/placeholders/error-placeholder";
+import EmptyPlaceholder from "@/components/placeholders/empty-placeholder";
+import DailyPresenceCard from "@/components/cards/daily-presence-card";
+
+export type CurrentAttendanceDetailDtoResponse = {
+  id?: number | null;
+  name: string;
+  role: string;
+  date: string;
+  checkInTime?: string | null;
+  checkOutTime?: string | null;
+  status?: "Present" | "Late" | "Absent";
+  workingHours?: string; // calculated from checkInTime and checkOutTime
+  photoUrl?: string | null;
+};
 
 export default function Page() {
+  const { data: res, isLoading, error } = useGetCurrentAttendance();
+
   const [currentTime, setCurrentTime] = useState<string>(
     format(new Date(), "yyyy-MM-dd HH:mm:ss")
   );
-  const [checkedIn] = useState<boolean>(false);
-  const [checkInTime] = useState<string | null>(null);
-  const [checkedOut, setCheckedOut] = useState<boolean>(false);
-  const [checkOutTime, setCheckOutTime] = useState<string | null>(null);
 
   // Update current time every second
   useEffect(() => {
@@ -26,16 +37,6 @@ export default function Page() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleCheckOut = () => {
-    setCheckedOut(true);
-    setCheckOutTime(format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-  };
-
-  const workedMinutes =
-    checkInTime && checkOutTime
-      ? differenceInMinutes(checkOutTime, checkInTime)
-      : null;
-
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -44,6 +45,7 @@ export default function Page() {
             title="Daily Presence"
             description="Welcome to the daily presence dashboard."
           />
+
           {/* Current Time */}
           <Card>
             <CardHeader>
@@ -57,86 +59,27 @@ export default function Page() {
             </CardContent>
           </Card>
 
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-4 md:gap-6">
-            {/* Check-In */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Check-In</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                {!checkedIn ? (
-                  <>
-                    <p className="text-muted-foreground">
-                      You haven’t checked in yet for today.
-                    </p>
-                    <Button
-                      variant="flat"
-                      as={Link}
-                      href={getHrefByName("Check-In")}
-                    >
-                      Check-In
-                    </Button>
-                  </>
-                ) : (
-                  <div className="flex items-center gap-3">
-                    <Badge variant="default">Checked In</Badge>
-                    <p className="font-medium">
-                      at{" "}
-                      {checkInTime &&
-                        format(
-                          new Date(checkInTime),
-                          "dd MMMM yyyy, h:mm:ss a"
-                        )}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Check-Out */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Check-Out</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                {!checkedIn ? (
-                  <p className="text-muted-foreground">
-                    Please check-in before checking out.
-                  </p>
-                ) : !checkedOut ? (
-                  <>
-                    <p className="text-muted-foreground">
-                      You haven’t checked out yet today.
-                    </p>
-                    <Button variant="flat" onPress={handleCheckOut}>
-                      Check-Out
-                    </Button>
-                  </>
-                ) : (
-                  <div className="flex items-center gap-3">
-                    <Badge variant="secondary">Checked Out</Badge>
-                    <p className="font-medium">
-                      at{" "}
-                      {checkOutTime &&
-                        format(
-                          new Date(checkOutTime),
-                          "dd MMMM yyyy, h:mm:ss a"
-                        )}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Worked hours summary */}
-          {workedMinutes !== null && (
-            <div className="rounded-lg bg-muted p-3 text-sm">
-              ⌛ Total worked:{" "}
-              <span className="font-medium">
-                {Math.floor(workedMinutes / 60)}h {workedMinutes % 60}m
-              </span>
+          {isLoading ? (
+            <div className="p-10">
+              <LoadingPlaceholder />
             </div>
+          ) : error ? (
+            <div className="py-10 px-4">
+              <ErrorPlaceholder
+                message={
+                  (error as ErrorType).response?.data?.message ||
+                  "An error occurred."
+                }
+              />
+            </div>
+          ) : !res?.data?.data || res?.data?.data?.length === 0 ? (
+            <div className="py-10 px-4">
+              <EmptyPlaceholder message={res?.data?.message} />
+            </div>
+          ) : (
+            <DailyPresenceCard
+              data={res?.data?.data as CurrentAttendanceDetailDtoResponse}
+            />
           )}
         </div>
       </div>

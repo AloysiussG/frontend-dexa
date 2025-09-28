@@ -10,6 +10,7 @@ import {
   deleteEmployeeApi,
   getAllAttendancesApi,
   getAllEmployeesApi,
+  getCurrentAttendanceApi,
   getOneAttendanceApi,
   getOneEmployeeApi,
   getUserApi,
@@ -42,6 +43,15 @@ export const onError = (error: ErrorType) => {
 };
 
 // ATTENDANCES
+
+export function useGetCurrentAttendance() {
+  return useQuery({
+    queryKey: ["attendances", "current"],
+    queryFn: async () => {
+      return await getCurrentAttendanceApi();
+    },
+  });
+}
 
 export function useGetAllAttendances(date?: string) {
   return useQuery({
