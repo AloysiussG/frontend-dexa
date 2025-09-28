@@ -302,9 +302,11 @@ export function AttendanceTable({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const statusOptions = ["Present", "Late", "Absent"];
+
   return (
     <div className="w-full flex flex-col justify-start gap-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4 w-full justify-between">
         <Input
           variant="bordered"
           placeholder="Search by name..."
@@ -314,6 +316,37 @@ export function AttendanceTable({
           }
           className="max-w-sm"
         />
+
+        <div className="flex items-center gap-4">
+          <Select
+            onValueChange={(value) => {
+              // If "All" is selected or empty, clear the filter
+              table
+                .getColumn("status")
+                ?.setFilterValue(
+                  value === "All" || value === "" ? undefined : value
+                );
+            }}
+            value={
+              (table.getColumn("status")?.getFilterValue() as string) ?? "All"
+            }
+          >
+            <SelectTrigger className="w-20 sm:w-32 lg:w-40">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">
+                <span className="hidden md:block">All Status</span>
+                <span className="block md:hidden">All</span>
+              </SelectItem>
+              {statusOptions.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {status}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-lg border">

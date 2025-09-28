@@ -86,6 +86,7 @@ export function DatePicker({ date, setDate }: Props) {
 
         {/* Today */}
         <Button
+          className="hidden @min-sm:block"
           variant="outline"
           onClick={() => {
             setDate(new Date());
