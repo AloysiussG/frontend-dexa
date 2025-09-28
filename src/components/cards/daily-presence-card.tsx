@@ -7,7 +7,6 @@ import { getHrefByName } from "@/lib/utils";
 import { InfoCard } from "./attendance-details-card";
 import {
   IconAlertCircleFilled,
-  IconCalendar,
   IconCircleCheckFilled,
   IconCircleXFilled,
   IconClockPlay,
@@ -15,7 +14,6 @@ import {
   IconLoader,
 } from "@tabler/icons-react";
 import Image from "next/image";
-import { format } from "date-fns";
 
 export default function DailyPresenceCard({
   data,
