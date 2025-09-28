@@ -43,6 +43,9 @@ This web application is designed to address common HR and employee needs in a mo
 
 ## Table of Contents
 
+- [Overview](#overview)
+- [Key & Feature Highlights](#key--feature-highlights)
+- [Use Cases](#use-cases)
 - [Tech Stacks](#tech-stacks)
 - [Front-end Tech & Features](#front-end-tech--features)
 - [Back-end Tech & Features](#back-end-tech--features)
@@ -163,7 +166,6 @@ Create MySQL database:
 
 ```bash
 CREATE DATABASE dexagroup_seto;
-
 ```
 
 Run the migration:
