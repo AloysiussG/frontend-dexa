@@ -11,6 +11,7 @@ import {
   getAllAttendancesApi,
   getAllEmployeesApi,
   getCurrentAttendanceApi,
+  getMainDashApi,
   getOneAttendanceApi,
   getOneEmployeeApi,
   getUserApi,
@@ -41,6 +42,17 @@ export const onError = (error: ErrorType) => {
   });
   console.error(error);
 };
+
+// MAIN DASH
+
+export function useGetMainDashboard() {
+  return useQuery({
+    queryKey: ["main-dash"],
+    queryFn: async () => {
+      return await getMainDashApi();
+    },
+  });
+}
 
 // ATTENDANCES
 

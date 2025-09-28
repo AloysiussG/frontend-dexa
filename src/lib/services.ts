@@ -16,6 +16,13 @@ export async function getUserApi() {
   return res; // data: {...} & message
 }
 
+// MAIN DASH
+
+export async function getMainDashApi() {
+  const res = await axios.get(`/api/dashboard/current`);
+  return res;
+}
+
 // ATTENDANCES
 
 export async function getCurrentAttendanceApi() {
