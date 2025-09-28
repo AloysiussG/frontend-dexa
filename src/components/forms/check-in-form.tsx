@@ -80,7 +80,12 @@ export default function CheckInForm({
                   <ImageDropzone
                     aspectRatio="16:9"
                     onDropCallback={field.onChange}
-                    onRemoveFileCallback={() => field.onChange(null)}
+                    onRemoveFileCallback={() =>
+                      field.onChange({
+                        id: "",
+                        url: "",
+                      })
+                    }
                     imgPreview={field.value}
                   />
                 </div>
