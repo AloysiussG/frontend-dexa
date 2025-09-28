@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { format } from "date-fns";
+import { addDays, format, isAfter, startOfDay } from "date-fns";
 
 type Props = {
   date: Date | undefined;
@@ -21,6 +21,12 @@ type Props = {
 export function DatePicker({ date, setDate }: Props) {
   const [open, setOpen] = React.useState(false);
   //   const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+  const today = startOfDay(new Date()); // normalize time to 00:00
+  const nextDate = addDays(startOfDay(date ?? today), 1);
+
+  // Check if next date exceeds today
+  const isDisabled = isAfter(nextDate, today);
 
   const shiftDate = (days: number) => {
     const base = date ?? new Date();
@@ -55,6 +61,7 @@ export function DatePicker({ date, setDate }: Props) {
               align="start"
             >
               <Calendar
+                disabled={{ after: today }}
                 mode="single"
                 selected={date}
                 captionLayout="dropdown"
@@ -67,7 +74,12 @@ export function DatePicker({ date, setDate }: Props) {
           </Popover>
 
           {/* Next day */}
-          <Button variant="outline" size="icon" onClick={() => shiftDate(1)}>
+          <Button
+            disabled={isDisabled}
+            variant="outline"
+            size="icon"
+            onClick={() => shiftDate(1)}
+          >
             <IconChevronRight />
           </Button>
         </div>

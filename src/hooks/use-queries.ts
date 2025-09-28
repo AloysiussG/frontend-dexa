@@ -23,7 +23,7 @@ import {
 } from "@/lib/services";
 import { addToast } from "@heroui/react";
 import { getHrefByName } from "@/lib/utils";
-import { AxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import { LoginFormValues } from "@/components/forms/login-form";
 
 export type Role = "HR" | "Employee";
@@ -42,7 +42,6 @@ export const onError = (error: ErrorType) => {
     title: error.response?.data?.message || "An error occurred.",
     color: "danger",
   });
-  console.error(error);
 };
 
 // MAIN DASH
@@ -226,7 +225,12 @@ export function useAuth() {
         return res.data?.data;
       } catch (error: unknown) {
         queryClient.setQueryData(["user"], null);
-        console.error(error);
+        if (isAxiosError(error) && error.response?.status === 401) {
+          console.info("User not logged in");
+        } else {
+          console.error(error);
+        }
+        return null;
       }
     },
     retry: 0,
