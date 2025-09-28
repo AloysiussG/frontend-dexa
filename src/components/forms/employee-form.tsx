@@ -68,9 +68,11 @@ export default function EmployeeForm({
     }
   };
 
-  const onSubmitError = (error: unknown) => {
-    console.error(error);
-  };
+  const onSubmitError = () =>
+    // error: unknown
+    {
+      console.info("Form Validation Error");
+    };
 
   return (
     <Form {...form}>

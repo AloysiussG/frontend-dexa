@@ -59,9 +59,11 @@ export default function CheckInForm({
     });
   };
 
-  const onSubmitError = (error: unknown) => {
-    console.error(error);
-  };
+  const onSubmitError = () =>
+    // error: unknown
+    {
+      console.info("Form Validation Error");
+    };
 
   return (
     <Form {...form}>

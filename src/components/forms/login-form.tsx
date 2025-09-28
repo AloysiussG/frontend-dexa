@@ -50,9 +50,11 @@ export function LoginForm({
     await login(data);
   };
 
-  const onSubmitError = (error: unknown) => {
-    console.error(error);
-  };
+  const onSubmitError = () =>
+    // error: unknown
+    {
+      console.info("Form Validation Error");
+    };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
