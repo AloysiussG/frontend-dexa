@@ -12,30 +12,25 @@ import {
   IconHourglassHigh,
   IconLoader,
 } from "@tabler/icons-react";
-import {
-  differenceInHours,
-  differenceInMinutes,
-  format,
-  parse,
-} from "date-fns";
+import { format } from "date-fns";
 import Image from "next/image";
 import { Avatar } from "@heroui/react";
 import { getInitials } from "@/lib/utils";
 
-type Attendance = {
+export type AttendanceDetails = {
   id: number;
-  userId?: number;
   name: string;
   role: string;
   date: string;
-  checkInTime: string;
+  checkInTime?: string | null;
   checkOutTime?: string | null;
-  status: string;
-  photoUrl?: string;
+  status: "Present" | "Late" | "Absent";
+  workingHours?: string;
+  photoUrl?: string | null;
   avatarUrl?: string;
 };
 
-export default function AttendanceCard({ data }: { data: Attendance }) {
+export default function AttendanceCard({ data }: { data: AttendanceDetails }) {
   const {
     name,
     role,
@@ -43,19 +38,10 @@ export default function AttendanceCard({ data }: { data: Attendance }) {
     checkInTime,
     checkOutTime,
     status,
+    workingHours,
     photoUrl,
     avatarUrl,
   } = data;
-
-  // calculate working hours
-  let workingHours: string | null = null;
-  if (checkOutTime) {
-    const checkIn = parse(checkInTime, "yyyy-MM-dd HH:mm:ss", new Date());
-    const checkOut = parse(checkOutTime, "yyyy-MM-dd HH:mm:ss", new Date());
-    const hours = differenceInHours(checkOut, checkIn);
-    const minutes = differenceInMinutes(checkOut, checkIn) % 60;
-    workingHours = `${hours}h ${minutes}m`;
-  }
 
   return (
     <div className="mx-auto space-y-4">
@@ -69,7 +55,7 @@ export default function AttendanceCard({ data }: { data: Attendance }) {
                   showFallback={true}
                   name={getInitials(name || "")}
                   className="w-20 h-20 text-large"
-                  src={avatarUrl}
+                  src={avatarUrl || "/avatar.jpg"}
                 />
                 <div className="">
                   <CardTitle>{name}</CardTitle>
@@ -125,14 +111,12 @@ export default function AttendanceCard({ data }: { data: Attendance }) {
         <InfoCard
           icon={<IconClockPlay size={20} />}
           label="Check In"
-          value={checkInTime ? format(new Date(checkInTime), "HH:mm:ss") : "-"}
+          value={checkInTime ? checkInTime : "-"}
         />
         <InfoCard
           icon={<IconClockStop size={20} />}
           label="Check Out"
-          value={
-            checkOutTime ? format(new Date(checkOutTime), "HH:mm:ss") : "-"
-          }
+          value={checkOutTime ? checkOutTime : "-"}
         />
       </div>
 
@@ -150,9 +134,11 @@ export default function AttendanceCard({ data }: { data: Attendance }) {
         <CardContent className="px-4 md:px-6">
           {photoUrl ? (
             <Image
-              src={photoUrl}
+              width={1920}
+              height={1080}
+              src={photoUrl || ""}
               alt="Attendance Proof"
-              className="rounded-xl border w-full object-cover max-h-64"
+              className="rounded-xl w-full object-contain max-h-96"
             />
           ) : (
             <div className="w-full h-40 flex items-center justify-center border rounded-xl bg-muted text-sm text-muted-foreground">
