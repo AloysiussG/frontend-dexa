@@ -18,7 +18,10 @@ import { useCheckIn } from "@/hooks/use-queries";
 const formSchema = z
   .object({
     checkInImage: z.object({
-      url: z.string().trim().min(1, { message: "Check-In Image is required" }),
+      url: z
+        .string()
+        .trim()
+        .min(1, { message: "Proof of presence image is required" }),
       id: z.string().optional(),
     }),
   })
@@ -27,7 +30,7 @@ const formSchema = z
       ctx.addIssue({
         code: "custom",
         path: ["checkInImage"],
-        message: "Check-In Image is required",
+        message: "Proof of presence image is required",
       });
     }
   });

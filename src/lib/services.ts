@@ -31,7 +31,7 @@ export async function checkIn(data: unknown) {
 }
 
 export async function checkOut(id: string) {
-  const res = await axios.patch(`/api/attendances/check-out${id}`);
+  const res = await axios.patch(`/api/attendances/check-out/${id}`);
   return res;
 }
 

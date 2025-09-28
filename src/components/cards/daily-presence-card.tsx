@@ -1,3 +1,5 @@
+"use client";
+
 import { CurrentAttendanceDetailDtoResponse } from "@/app/(dashboard)/daily-presence/page";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,13 +17,21 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import { BadgeCheckIcon } from "lucide-react";
+import { useCheckOut } from "@/hooks/use-queries";
 
 export default function DailyPresenceCard({
   data,
 }: {
   data: CurrentAttendanceDetailDtoResponse;
 }) {
-  const handleCheckOut = () => {};
+  const { mutateAsync: checkOut, isPending } = useCheckOut();
+
+  const handleCheckOut = async () => {
+    if (data?.id) {
+      await checkOut(data?.id?.toString());
+    }
+  };
+
   return (
     <>
       {/* Status */}
@@ -111,6 +121,7 @@ export default function DailyPresenceCard({
                     className="bg-neutral-800 text-white hover:bg-neutral-700"
                     variant="flat"
                     onPress={handleCheckOut}
+                    isLoading={isPending}
                   >
                     Check-Out
                   </Button>
