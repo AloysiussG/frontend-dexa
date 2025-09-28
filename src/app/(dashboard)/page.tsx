@@ -21,6 +21,9 @@ import EmptyPlaceholder from "@/components/placeholders/empty-placeholder";
 import AuthGuard from "@/components/guards/auth-guard";
 
 export type GetDashboardDtoResponse = {
+  maxCheckIn?: string;
+  minCheckOut?: string;
+  stdWorkingHours?: string;
   role: string;
   employeesCount?: string;
   attendancesCount?: string;
@@ -65,17 +68,17 @@ export default function Page() {
                 {(dashData?.role === "Employee" || dashData?.role === "HR") && (
                   <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-3 @5xl/main:grid-cols-5">
                     <SectionCard
-                      cardTitle={"08.15"}
+                      cardTitle={dashData?.maxCheckIn || "08.15"}
                       cardDescription="Max. Check-In"
                       cardAction={<IconCalendar size={28} />}
                     />
                     <SectionCard
-                      cardTitle={"17.00"}
+                      cardTitle={dashData.minCheckOut || "17.00"}
                       cardDescription="Min. Check-Out"
                       cardAction={<IconClock size={28} />}
                     />
                     <SectionCard
-                      cardTitle={"8h 45m"}
+                      cardTitle={dashData.stdWorkingHours || "8h 45m"}
                       cardDescription="Std. Working Hours"
                       cardAction={<IconCheck size={28} />}
                     />
