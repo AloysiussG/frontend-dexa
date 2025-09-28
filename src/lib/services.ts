@@ -1,12 +1,19 @@
 import { addToast } from "@heroui/react";
 import axios from "./axios";
 
+const delayFirst = async () => {
+  const timeout = 250;
+  await new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 export async function loginApi(data: { email: string; password: string }) {
+  await delayFirst();
   const res = await axios.post(`/api/auth/login`, data);
   return res; // data: { id, name, token } & message
 }
 
 export async function logoutApi() {
+  await delayFirst();
   const res = await axios.delete(`/api/auth/logout`);
   return res; // data: true & message
 }
@@ -19,6 +26,7 @@ export async function getUserApi() {
 // MAIN DASH
 
 export async function getMainDashApi() {
+  await delayFirst();
   const res = await axios.get(`/api/dashboard/current`);
   return res;
 }
@@ -26,11 +34,13 @@ export async function getMainDashApi() {
 // DAILY PRESENCE
 
 export async function checkIn(data: unknown) {
+  await delayFirst();
   const res = await axios.post(`/api/attendances/check-in`, data);
   return res;
 }
 
 export async function checkOut(id: string) {
+  await delayFirst();
   const res = await axios.patch(`/api/attendances/check-out/${id}`);
   return res;
 }
@@ -38,11 +48,13 @@ export async function checkOut(id: string) {
 // ATTENDANCES
 
 export async function getCurrentAttendanceApi() {
+  await delayFirst();
   const res = await axios.get(`/api/attendances/current`);
   return res;
 }
 
 export async function getAllAttendancesApi(date?: string) {
+  await delayFirst();
   const res = await axios.get(`/api/attendances`, {
     params: { date },
   });
@@ -50,6 +62,7 @@ export async function getAllAttendancesApi(date?: string) {
 }
 
 export async function getOneAttendanceApi(id: string) {
+  await delayFirst();
   const res = await axios.get(`/api/attendances/${id}`);
   return res;
 }
@@ -57,26 +70,31 @@ export async function getOneAttendanceApi(id: string) {
 // EMPLOYEES
 
 export async function createEmployeeApi(data: unknown) {
+  await delayFirst();
   const res = await axios.post(`/api/employees`, data);
   return res;
 }
 
 export async function getAllEmployeesApi() {
+  await delayFirst();
   const res = await axios.get(`/api/employees`);
   return res;
 }
 
 export async function getOneEmployeeApi(id: string) {
+  await delayFirst();
   const res = await axios.get(`/api/employees/${id}`);
   return res;
 }
 
 export async function updateEmployeeApi(id: string, data: unknown) {
+  await delayFirst();
   const res = await axios.patch(`/api/employees/${id}`, data);
   return res;
 }
 
 export async function deleteEmployeeApi(id: string) {
+  await delayFirst();
   const res = await axios.delete(`/api/employees/${id}`);
   return res;
 }
